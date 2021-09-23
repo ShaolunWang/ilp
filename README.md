@@ -1,2 +1,2 @@
-# ilp
+# ILP
 Informatics Large Practical
