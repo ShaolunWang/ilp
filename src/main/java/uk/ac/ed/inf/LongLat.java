@@ -1,10 +1,11 @@
 package uk.ac.ed.inf;
 
-public class LongLat {
+public class LongLat
+{
     public double longitude;
     public double latitude;
     private int angle;
-	private final double move = 0.00015;
+	private static double move = 0.00015;
     public LongLat(double longitude, double latitude)
     {
         this.longitude = longitude;
@@ -37,11 +38,7 @@ public class LongLat {
 	}
 	public LongLat nextPosition(int angle)
 	{
-		this.angle = angle;
-		double x_move = Math.cos(angle)*move;
-		double y_move = Math.sin(angle)*move;
-
-		return new LongLat(longitude+x_move, latitude+y_move);
+		this.angle = angle.toRadians(
 
 	}
 
