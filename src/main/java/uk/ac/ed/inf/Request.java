@@ -1,10 +1,9 @@
 package uk.ac.ed.inf;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.io.InputStream;
-import java.io.DataInputStream;
-import java.net.Socket;
 
 /* The idea of this module is to handle file fetching from server to client
  * 1. send a "GET /x/x.json" to the server
@@ -16,10 +15,10 @@ public class Request
 	// hostname and port
 	//
 	String hostname;
-	int port;
+	String port;
 	String location;
 
-	public Request(String hostname, int port, String location)
+	public Request(String hostname, String port, String location)
 	{
 		this.hostname = hostname;
 		this.port     = port;
@@ -28,37 +27,31 @@ public class Request
 
 	public String socketOut()
 	{
-		String file="";
+		InputStream file;
+		String loc = "http://"+ hostname + ":" + port + location;
 		try
 		{
-			// opening the socket	
-			Socket socket = new Socket(hostname, port);
-			System.out.println("connected to the server");
+
+			URL url = new URL(loc);
+			URLConnection fileRequest = url.openConnection();
+		    fileRequest.connect();
+			System.out.println("Connected.");
 			
-			// sending request
-			OutputStream output = socket.getOutputStream();
-			DataOutputStream getFileCommand = new DataOutputStream(output); 
-	        System.out.println("Sending requests to the server");
+			file = (InputStream) fileRequest.getContent();
+			DataInputStream dataInputStream = new DataInputStream(file);
+			System.out.println("kasdjf;sjd");
+			while (file.read() != -1)
+				System.out.println(file.);
+			//InputStreamReader	new InputStreamReader()
 
-
-
-			getFileCommand.writeUTF("GET " + location);
-			getFileCommand.flush();
-			getFileCommand.close();
-
-
-			InputStream input = socket.getInputStream();
-			DataInputStream inputFile = new DataInputStream(input);
-
-			file = inputFile.readUTF();
-			inputFile.close();
-			socket.close();
 		}
+
 		catch(Exception IOExceptions)
 		{
+			System.out.println("kjsdlkjafls;");
 			System.out.println(IOExceptions);
 		}
-		return file;
+		return "a";
 	}
 
 }
