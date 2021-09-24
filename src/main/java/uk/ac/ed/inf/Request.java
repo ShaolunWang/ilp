@@ -1,10 +1,12 @@
 package uk.ac.ed.inf;
 
-import java.io.*;
+
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import com.google.gson.*;
+import java.io.IOException;
 import java.io.InputStream;
-
 /* The idea of this module is to handle file fetching from server to client
  * 1. send a "GET /x/x.json" to the server
  * 2. recieve the string
@@ -25,33 +27,36 @@ public class Request
 		this.location = location;
 	}
 
-	public String socketOut()
+	public JsonObject socketOut()
 	{
 		InputStream file;
 		String loc = "http://"+ hostname + ":" + port + location;
 		try
 		{
-
 			URL url = new URL(loc);
 			URLConnection fileRequest = url.openConnection();
 		    fileRequest.connect();
 			System.out.println("Connected.");
-			
-			file = (InputStream) fileRequest.getContent();
-			DataInputStream dataInputStream = new DataInputStream(file);
-			System.out.println("kasdjf;sjd");
-			while (file.read() != -1)
-				System.out.println(file.);
+
+			JsonParser parser = new JsonParser(); //from gson
+			JsonElement elem = parser.parse(
+					new InputStreamReader((InputStream) fileRequest.getContent()));
+
+
+			return elem.getAsJsonObject();
+
+
 			//InputStreamReader	new InputStreamReader()
-
 		}
-
 		catch(Exception IOExceptions)
 		{
 			System.out.println("kjsdlkjafls;");
 			System.out.println(IOExceptions);
+
+			System.exit(0) ;
 		}
-		return "a";
+
+		return null;
 	}
 
 }
