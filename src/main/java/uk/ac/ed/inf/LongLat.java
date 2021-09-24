@@ -1,46 +1,47 @@
 package uk.ac.ed.inf;
 
-public class LongLat()
-{
+public class LongLat {
     public double longitude;
     public double latitude;
     private int angle;
-	private final double move = 0.00015
-    public LongLat(String longitude, String latitude)
+	private final double move = 0.00015;
+    public LongLat(double longitude, double latitude)
     {
         this.longitude = longitude;
         this.latitude  = latitude;
-        angle          = -1000;
+        this.angle          = -1000;
     }
 
-	public bool isConfined()
+	public boolean isConfined()
 	{
-		bool confined = false;
+		boolean x_confined = false;
+		boolean y_confined = false;
 
-		return  confined;
+		if (longitude >= -3.191594 && longitude <= -3.184319)
+			x_confined = true;
+		if (latitude >= 55.942617 && latitude <= 55.943658)
+			y_confined = true;
+
+		return x_confined && y_confined;
 	}
 	public double distanceTo(LongLat pos)
 	{
-		x_diff = pos.longitude - longitude;
-		y_diff = pos.latitude  - latitude;
-		return Math.sqrt(x_diff*x_diff, y_diff*y_diff);
+		double x_diff = pos.longitude - longitude;
+		double y_diff = pos.latitude  - latitude;
+		return Math.sqrt(x_diff*x_diff+y_diff*y_diff);
 	}
-	public bool closeTo(LongLat coord)
+	public boolean closeTo(LongLat coord)
 	{
-		
-		bool isClose = false;
+		return distanceTo(coord) <= move;
 
-		return isConfined;
-		
 	}
 	public LongLat nextPosition(int angle)
 	{
 		this.angle = angle;
-		x_move = Math.cos(angle)*move;
-		y_move = Math.sin(angle)*move; 
+		double x_move = Math.cos(angle)*move;
+		double y_move = Math.sin(angle)*move;
 
-		LongLat new_pos = new LongLat(longitude.x_move, latitude.y_move);
-		return new_pos;
+		return new LongLat(longitude+x_move, latitude+y_move);
 
 	}
 
