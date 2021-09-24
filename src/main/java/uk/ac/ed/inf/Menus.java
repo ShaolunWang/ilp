@@ -1,6 +1,7 @@
-package uk.ac.ed.inf
-
-public Menus
+package uk.ac.ed.inf;
+import java.util.ArrayList;
+import java.util.List;
+public class Menus
 {
 	String hostname;
 	int port;
@@ -9,11 +10,11 @@ public Menus
 	public Menus(String hostname, String port)
 	{
 		this.hostname = hostname;
-		this.port     = port.toString();
+		this.port     = Integer.parseInt(port);
 		this.cost     = 50; // only do += on this
 	}
 
-	public int getDeliveryCost(List<string> food)
+	public int getDeliveryCost(List<String> food)
 	{
 		return cost;		
 	}

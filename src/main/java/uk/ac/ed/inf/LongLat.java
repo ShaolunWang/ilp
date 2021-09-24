@@ -4,7 +4,7 @@ public class LongLat
 {
     public double longitude;
     public double latitude;
-    private int angle;
+    private double angle;
 	private static double move = 0.00015;
     public LongLat(double longitude, double latitude)
     {
@@ -38,8 +38,12 @@ public class LongLat
 	}
 	public LongLat nextPosition(int angle)
 	{
-		this.angle = angle.toRadians(
+		this.angle = Math.toRadians(angle);
+		
+		double x_move = Math.cos(this.angle)*move;
+		double y_move = Math.sin(this.angle)*move;
 
+		return new LongLat(longitude+x_move,latitude+y_move);
 	}
 
 

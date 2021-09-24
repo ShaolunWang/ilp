@@ -1,9 +1,14 @@
-package uk.ac.ed.inf
+package uk.ac.ed.inf;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.DataInputStream;
+import java.net.Socket;
 
 /* The idea of this module is to handle file fetching from server to client
  * 1. send a "GET /x/x.json" to the server
- * 2. recieve the string obj
- * 3. turn it into json file
+ * 2. recieve the string
 */
 
 public class Request
@@ -17,12 +22,13 @@ public class Request
 	public Request(String hostname, int port, String location)
 	{
 		this.hostname = hostname;
-		this.port     = port
+		this.port     = port;
 		this.location = location;
 	}
 
-	protect void socket_out()
+	public String socketOut()
 	{
+		String file="";
 		try
 		{
 			// opening the socket	
@@ -34,29 +40,24 @@ public class Request
 			DataOutputStream getFileCommand = new DataOutputStream(output); 
 	        System.out.println("Sending requests to the server");
 
+
+
 			getFileCommand.writeUTF("GET " + location);
-			getFileCommand.flush()
-			getFileCommand.close
-		}
-		catch(IOExceptions)
-			System.out.println(IOExceptions);
-	}
+			getFileCommand.flush();
+			getFileCommand.close();
 
-	protect String getFile()
-	{
-		String file;
-		try
+
+			InputStream input = socket.getInputStream();
+			DataInputStream inputFile = new DataInputStream(input);
+
+			file = inputFile.readUTF();
+			inputFile.close();
+			socket.close();
+		}
+		catch(Exception IOExceptions)
 		{
-			
-			InputStream inputFile = socket.getInputStream();
-			DataInputStream inputFile = new DataInputStream(inputStream);
-
-			String file = inputFile.readUTF(); 
-			socket.close;
-		}
-		catch(IOExceptions)
 			System.out.println(IOExceptions);
-			
+		}
 		return file;
 	}
 
