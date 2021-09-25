@@ -27,7 +27,7 @@ public class Request
 		this.location = location;
 	}
 
-	public JsonObject socketOut()
+	public JsonArray requestAccess()
 	{
 		InputStream file;
 		String loc = "http://"+ hostname + ":" + port + location;
@@ -39,11 +39,12 @@ public class Request
 			System.out.println("Connected.");
 
 			JsonParser parser = new JsonParser(); //from gson
+
 			JsonElement elem = parser.parse(
 					new InputStreamReader((InputStream) fileRequest.getContent()));
 
+			return elem.getAsJsonArray();
 
-			return elem.getAsJsonObject();
 
 
 			//InputStreamReader	new InputStreamReader()

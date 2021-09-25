@@ -5,7 +5,7 @@ public class LongLat
     public double longitude;
     public double latitude;
     private double angle;
-	private static double move = 0.00015;
+	private static final double move = 0.00015;
     public LongLat(double longitude, double latitude)
     {
         this.longitude = longitude;
@@ -42,7 +42,8 @@ public class LongLat
 		
 		double x_move = Math.cos(this.angle)*move;
 		double y_move = Math.sin(this.angle)*move;
-
+		if (angle == -999)
+			return new LongLat(longitude,latitude);
 		return new LongLat(longitude+x_move,latitude+y_move);
 	}
 

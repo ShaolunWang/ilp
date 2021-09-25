@@ -1,22 +1,32 @@
 package uk.ac.ed.inf;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.JsonArray;
+
 public class Menus
 {
 	String hostname;
-	int port;
+	String port;
 	int cost;
 
 	public Menus(String hostname, String port)
 	{
 		this.hostname = hostname;
-		this.port     = Integer.parseInt(port);
+		this.port     = port;
 		this.cost     = 50; // only do += on this
 	}
 
-	public int getDeliveryCost(List<String> food)
+	public int getDeliveryCost(String ...food)
 	{
-		return cost;		
+		Request getMenus = new Request(hostname, port, "/menus/menus.json");
+		JsonArray shopArray = getMenus.requestAccess();
+		JsonParsing parserArray = new JsonParsing(shopArray);
+
+		for (String s : food) {
+			//fetch their price
+			cost = cost + parserArray.parseJsonArrayMenu(s, "pence");
+		}
+		return cost;
 	}
+
+
 	
 }
