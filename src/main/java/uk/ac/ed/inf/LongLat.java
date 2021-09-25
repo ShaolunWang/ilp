@@ -16,6 +16,7 @@ public class LongLat
     }
 
 	/**
+	 * Check whether the drone is in the range of the confined area
 	 * @return true if in the square confined by four shops, else false
 	 */
 	public boolean isConfined()
@@ -32,10 +33,9 @@ public class LongLat
 	}
 
 	/**
-	 *
+	 * Calculate the distance between two coordinates
 	 * @param coord the position of the other point.
 	 * @return distance between two points
-
 	 */
 	public double distanceTo(LongLat coord)
 	{
@@ -46,7 +46,7 @@ public class LongLat
 	}
 
 	/**
-	 *
+	 * check whether two points are close to each other
 	 * @param coord coordinate of the other point
 	 * @return True if close, else false
 	 */
@@ -57,7 +57,7 @@ public class LongLat
 	}
 
 	/**
-	 *
+	 * Calculate the next position based on the given angle
 	 * @param angle the new angle of the drone
 	 * @return the position after given the new angle and made a move
 	 */

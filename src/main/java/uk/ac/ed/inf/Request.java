@@ -1,6 +1,5 @@
 package uk.ac.ed.inf;
 
-
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -8,10 +7,6 @@ import com.google.gson.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-/* The idea of this module is to handle file fetching from server to client
- * 1. send a "GET /x/x.json" to the server
- * 2. Get Json Array; 
-*/
 
 public class Request
 {
@@ -29,6 +24,9 @@ public class Request
 	}
 
 	/**
+	 *  The idea of this module is to separate request with JsonParsing
+	 *  using URL for access and fetch the inputstream
+	 *  return the result in JsonArray form
 	 *	@return JsonArray if successfully fetched.
 	 * 	@throws IOException if failed to read file.
 	 */
@@ -44,7 +42,6 @@ public class Request
 		    fileRequest.connect(); // fetch the file as InputStream;
 			System.out.println("Connected.\nParsing file...");
 
-			//
 			JsonParser parser = new JsonParser(); //from gson
 			JsonElement elem = parser.parse(
 					new InputStreamReader((InputStream) fileRequest.getContent()));
