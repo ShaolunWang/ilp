@@ -28,11 +28,8 @@ public class Menus
 		JsonArray shopArray = getMenus.requestAccess();
 		JsonParsing parserArray = new JsonParsing(shopArray);
 
-		for (String s : food)
-		{
 			//fetch their price
-			cost = cost + parserArray.parseJsonArrayMenu(s, "pence");
-		}
+		cost = cost + parserArray.parseJsonArrayMenu(food, "pence");
 		return cost;
 	}
 }
