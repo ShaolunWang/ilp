@@ -40,7 +40,7 @@ public class Request
 			URL url = new URL(loc);
 			URLConnection fileRequest = url.openConnection();
 		    fileRequest.connect(); // fetch the file as InputStream;
-			System.out.println("Connected.\nParsing file...");
+			//System.out.println("Connected.\nParsing file...");
 
 			JsonParser parser = new JsonParser(); //from gson
 			JsonElement elem = parser.parse(
