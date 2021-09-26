@@ -1,4 +1,5 @@
 package uk.ac.ed.inf;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -7,9 +8,9 @@ import java.util.Arrays;
 
 public class Menus
 {
-	String hostname;
-	String port;
-	int cost;
+	private final String hostname;
+	private final String port;
+	private int cost;
 
 	public Menus(String hostname, String port)
 	{
@@ -30,7 +31,7 @@ public class Menus
 		Request getMenus = new Request(hostname, port, "/menus/menus.json");
 		JsonArray shopArray = getMenus.requestAccess();
 		ArrayList<String> foods = new ArrayList<>(Arrays.asList(order));
-
+		ArrayList<Integer> removed;
 
 		try
 		{
@@ -43,16 +44,25 @@ public class Menus
 
 				cost += menu.menuParser(foods);
 
-				ArrayList<Integer> removed = menu.getRemoved();
-				for (int j = 0; j< removed.size();j++)
-					foods.remove(removed.get(j));
+				//clean up the foods
+
+				removed = menu.getRemoved();
+				if (foods.size() != 0)
+				{
+					for (Integer j : removed)
+						foods.remove(j);
+				}
+				if (removed.size() != 0)
+					removed.clear();
 			}
 
+
 		}
-		catch (Exception e)
+		catch (NullPointerException e)
         {
-            System.out.println(e);
+            System.out.println("Exception thrown: " + e);
         }
 		return cost;
 	}
+
 }

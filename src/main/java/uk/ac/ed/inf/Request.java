@@ -3,18 +3,19 @@ package uk.ac.ed.inf;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 
 public class Request
 {
 	// hostname and port
 	//
-	String hostname;
-	String port;
-	String location;
+	private final String hostname;
+	private final String port;
+	private final String location;
 
 	public Request(String hostname, String port, String location)
 	{
@@ -28,7 +29,6 @@ public class Request
 	 *  using URL for access and fetch the inputstream
 	 *  return the result in JsonArray form
 	 *	@return JsonArray if successfully fetched.
-	 * 	@throws IOException if failed to read file.
 	 */
 	public JsonArray requestAccess()
 	{
@@ -50,7 +50,7 @@ public class Request
 		}
 		catch(IOException e)
 		{
-			System.out.println(e);
+			System.out.println("Exception catched: " + e);
 		}
 
 		return null;

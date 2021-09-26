@@ -1,9 +1,7 @@
 package uk.ac.ed.inf;
 
 import com.google.gson.JsonArray;
-
 import com.google.gson.JsonObject;
-
 import java.util.ArrayList;
 
 public class Parser
@@ -20,6 +18,7 @@ public class Parser
      * This is a helper function for parsing the total price of the food ordered
      * It only returns the price of the food
      * that's currently being parsed
+     * @param foods the ArrayList of foods ordered
      * @return the price of the current food
      */
 
@@ -43,6 +42,13 @@ public class Parser
         }
         return foodCost;
     }
+
+    /**
+     * public method to get list of items that's being searched already
+     * used for optimizing by not searching items
+     * that's already been added to cost
+     * @return list of index of the items that's being removed
+     */
     public ArrayList<Integer> getRemoved()
     {
         return removed;
