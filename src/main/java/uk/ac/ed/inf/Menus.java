@@ -2,6 +2,9 @@ package uk.ac.ed.inf;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Menus
 {
 	String hostname;
@@ -18,32 +21,31 @@ public class Menus
 	/**
 	 * Find the price of given food order
 	 * First send requesting access to the webserver
-	 * Then use Parsing module to parse the content
-	 * @param food arbitrary amount of food names
+	 * Then use JsonParsing module to parse the content
+	 * @param order arbitrary amount of food ordered
 	 * @return the cost of all the food
 	 */
-	public int getDeliveryCost(String ...food)
+	public int getDeliveryCost(String ...order)
 	{
-
 		Request getMenus = new Request(hostname, port, "/menus/menus.json");
 		JsonArray shopArray = getMenus.requestAccess();
-		//fetch their price
+		ArrayList<String> foods = new ArrayList<>(Arrays.asList(order));
+
+
 		try
 		{
-			for (String name : food)
+			for (int i = 0; i < shopArray.size();i++)
 			{
-				for (int i = 0; i < shopArray.size();i++)
-				{
-					JsonObject curr_shop = shopArray.get(i).getAsJsonObject();
 
-					Parser menu = new Parser(curr_shop.get("menu").getAsJsonArray());
-					//cost for a single food in the order
+				JsonObject curr_shop = shopArray.get(i).getAsJsonObject();
+				Parser menu = new Parser(curr_shop.get("menu").getAsJsonArray());
+				//cost for a single food in the order
 
-					int foodCost = menu.menuParser(name, "pence");
-					if (foodCost != -1)
-						cost += foodCost; 
+				cost += menu.menuParser(foods);
 
-				}
+				ArrayList<Integer> removed = menu.getRemoved();
+				for (int j = 0; j< removed.size();j++)
+					foods.remove(removed.get(j));
 			}
 
 		}
@@ -51,6 +53,6 @@ public class Menus
         {
             System.out.println(e);
         }
-				return cost;
+		return cost;
 	}
 }
