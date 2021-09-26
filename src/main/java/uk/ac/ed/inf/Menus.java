@@ -1,5 +1,6 @@
 package uk.ac.ed.inf;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class Menus
 {
@@ -17,7 +18,7 @@ public class Menus
 	/**
 	 * Find the price of given food order
 	 * First send requesting access to the webserver
-	 * Then use JsonParsing module to parse the content
+	 * Then use Parsing module to parse the content
 	 * @param food arbitrary amount of food names
 	 * @return the cost of all the food
 	 */
@@ -26,10 +27,30 @@ public class Menus
 
 		Request getMenus = new Request(hostname, port, "/menus/menus.json");
 		JsonArray shopArray = getMenus.requestAccess();
-		JsonParsing parserArray = new JsonParsing(shopArray);
+		//fetch their price
+		try
+		{
+			for (String name : food)
+			{
+				for (int i = 0; i < shopArray.size();i++)
+				{
+					JsonObject curr_shop = shopArray.get(i).getAsJsonObject();
 
-			//fetch their price
-		cost = cost + parserArray.parseJsonArrayMenu(food, "pence");
-		return cost;
+					Parser menu = new Parser(curr_shop.get("menu").getAsJsonArray());
+					//cost for a single food in the order
+
+					int foodCost = menu.menuParser(name, "pence");
+					if (foodCost != -1)
+						cost += foodCost; 
+
+				}
+			}
+
+		}
+		catch (Exception e)
+        {
+            System.out.println(e);
+        }
+				return cost;
 	}
 }
