@@ -4,6 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 
+/**
+ * This is the helper class that parses Json files.
+ * It uses Gson's `JsonArray` and `JsonObject` for parsing.
+ */
 public class Parser
 {
     private final JsonArray jsonEntry;

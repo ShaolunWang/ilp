@@ -6,6 +6,10 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ *  This is the module for menu access.
+ *  It uses URL and Gson for request and parsing.
+ */
 public class Menus
 {
 	private final String hostname;

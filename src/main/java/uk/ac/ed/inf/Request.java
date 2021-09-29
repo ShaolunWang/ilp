@@ -9,6 +9,10 @@ import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * This is the module for sending request to the web server
+ * and returning a `JsonArray` for any other module that calls it.
+ */
 public class Request
 {
 	// hostname and port
@@ -26,7 +30,7 @@ public class Request
 
 	/**
 	 *  The idea of this module is to separate request with JsonParsing
-	 *  using URL for access and fetch the inputstream
+	 *  using URL for access and fetch the input stream
 	 *  return the result in JsonArray form
 	 *	@return JsonArray if successfully fetched.
 	 */

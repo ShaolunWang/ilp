@@ -1,7 +1,9 @@
 package uk.ac.ed.inf;
 
-import java.util.Objects;
-
+/**
+ * This is the class LongLat, representing drone's position
+ * by using attribute longitude, latitude and angle.
+ */
 public class LongLat
 {
     public double longitude;
