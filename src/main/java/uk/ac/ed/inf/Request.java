@@ -50,7 +50,7 @@ public class Request
 		}
 		catch(IOException e)
 		{
-			System.out.println("Exception catched: " + e);
+			System.out.println("Exception caught: " + e);
 		}
 
 		return null;
