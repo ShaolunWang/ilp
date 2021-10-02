@@ -59,8 +59,6 @@ public class Menus
 				if (removed.size() != 0)
 					removed.clear();
 			}
-
-
 		}
 		catch (NullPointerException e)
         {

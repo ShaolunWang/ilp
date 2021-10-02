@@ -10,6 +10,7 @@ public class LongLat
     public double latitude;
     private double angle;
 	private static final double move = 0.00015;
+
     public LongLat(double longitude, double latitude)
     {
         this.longitude = longitude;
@@ -26,9 +27,9 @@ public class LongLat
 		boolean x_confined = false;
 		boolean y_confined = false;
 
-		if (longitude >= -3.191594 && longitude <= -3.184319)
+		if (longitude > -3.192473 && longitude < -3.184319)
 			x_confined = true;
-		if (latitude >= 55.942617 && latitude <= 55.943658)
+		if (latitude > 55.942617 && latitude < 55.946233)
 			y_confined = true;
 
 		return x_confined && y_confined;
@@ -57,6 +58,8 @@ public class LongLat
 		return distanceTo(coord) <= move;
 
 	}
+
+
 
 	/**
 	 * Calculate the next position based on the given angle
