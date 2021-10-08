@@ -1,6 +1,8 @@
+
 package uk.ac.ed.inf;
 
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import com.google.gson.JsonArray;
@@ -34,7 +36,7 @@ public class Request
 	 *  return the result in JsonArray form
 	 *	@return JsonArray if successfully fetched.
 	 */
-	public JsonArray requestAccess()
+	public Reader requestAccess()
 	{
 		InputStream file;
 		String loc = "http://"+ hostname + ":" + port + location;
@@ -43,14 +45,15 @@ public class Request
 			// Url request;
 			URL url = new URL(loc);
 			URLConnection fileRequest = url.openConnection();
-		    fileRequest.connect(); // fetch the file as InputStream;
+			fileRequest.connect(); // fetch the file as InputStream;
 			//System.out.println("Connected.\nParsing file...");
 
 			JsonParser parser = new JsonParser(); //from gson
-			JsonElement elem = parser.parse(
-					new InputStreamReader((InputStream) fileRequest.getContent()));
+			//JsonElement elem = parser.parse(
+			//		new InputStreamReader((InputStream) fileRequest.getContent()));
+			InputStreamReader parsed = new InputStreamReader((InputStream) fileRequest.getContent());
 
-			return elem.getAsJsonArray();
+			return parsed;
 		}
 		catch(IOException e)
 		{
