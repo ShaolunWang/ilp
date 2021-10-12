@@ -29,6 +29,7 @@ public class LongLat
 
 		if (longitude > -3.192473 && longitude < -3.184319)
 			x_confined = true;
+
 		if (latitude > 55.942617 && latitude < 55.946233)
 			y_confined = true;
 
@@ -55,8 +56,7 @@ public class LongLat
 	 */
 	public boolean closeTo(LongLat coord)
 	{
-		return distanceTo(coord) <= move;
-
+		return (distanceTo(coord) <= move);
 	}
 
 

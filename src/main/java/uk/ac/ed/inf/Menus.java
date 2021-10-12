@@ -32,7 +32,6 @@ public class Menus
 	 * @param order arbitrary amount of food ordered
 	 * @return the cost of all the food
 	 */
-
 	public int getDeliveryCost(String ...order)
 	{
 
@@ -40,8 +39,10 @@ public class Menus
 		Request getMenus = new Request(hostname, port,"/menus/menus.json");
 		Type listType = new TypeToken<List<Shop>>(){}.getType();
 		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccess(), listType);
+
 		ArrayList<Integer> removed = new ArrayList<>();
 		ArrayList<String> foods = new ArrayList<>(Arrays.asList(order));
+
 		try
 		{
 			//iterate through all the shops
@@ -50,18 +51,19 @@ public class Menus
 				//iterate through all the foods being ordered
 				for (int i = 0;i < foods.size();i++)
 				{
-					//iterate
+					//iterate through the menus
 					for (int j = 0; j < items.menu.size();j++)
 					{
 						if ((items.menu.get(j).item).equals(foods.get(i)))
 						{
+							//adding the iterated items through the removing list
 							removed.add(i);
 							cost += items.menu.get(j).pence;
 						}
 					}
 				}
 			}
-				//reducing the search counts
+			//reducing the search counts by removing the items that's being searched
 			if (foods.size() != 0)
 			{
 				for (Integer index : removed)

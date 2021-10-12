@@ -5,9 +5,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -17,8 +14,7 @@ import java.io.InputStream;
  */
 public class Request
 {
-	// hostname and port
-	//
+	// hostname and port, with location
 	private final String hostname;
 	private final String port;
 	private final String location;
@@ -38,20 +34,17 @@ public class Request
 	 */
 	public Reader requestAccess()
 	{
-		InputStream file;
 		String loc = "http://"+ hostname + ":" + port + location;
 		try
 		{
 			// Url request;
 			URL url = new URL(loc);
 			URLConnection fileRequest = url.openConnection();
-			fileRequest.connect(); // fetch the file as InputStream;
-			//System.out.println("Connected.\nParsing file...");
+			fileRequest.connect();
+			// fetch the file as InputStream;
 
-			JsonParser parser = new JsonParser(); //from gson
-			//JsonElement elem = parser.parse(
-			//		new InputStreamReader((InputStream) fileRequest.getContent()));
-			InputStreamReader parsed = new InputStreamReader((InputStream) fileRequest.getContent());
+			InputStreamReader parsed = new InputStreamReader(
+					(InputStream) fileRequest.getContent());
 
 			return parsed;
 		}
