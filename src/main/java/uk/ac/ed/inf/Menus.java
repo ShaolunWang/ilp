@@ -1,10 +1,12 @@
 package uk.ac.ed.inf;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *  This is the module for menu access.
@@ -32,33 +34,43 @@ public class Menus
 	 */
 	public int getDeliveryCost(String ...order)
 	{
-		Request getMenus = new Request(hostname, port, "/menus/menus.json");
-		JsonArray shopArray = getMenus.requestAccess();
+
+		Gson gson = new Gson();
+		Request getMenus = new Request(hostname, port,"/menus/menus.json");
+		Type listType = new TypeToken<List<Shop>>(){}.getType();
+		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccess(), listType);
+
+		ArrayList<Integer> removed = new ArrayList<>();
 		ArrayList<String> foods = new ArrayList<>(Arrays.asList(order));
-		ArrayList<Integer> removed;
 
 		try
 		{
-			for (int i = 0; i < shopArray.size();i++)
+			//iterate through all the shops
+			for (Shop items: shops)
 			{
-
-				JsonObject curr_shop = shopArray.get(i).getAsJsonObject();
-				Parser menu = new Parser(curr_shop.get("menu").getAsJsonArray());
-				//cost for a single food in the order
-
-				cost += menu.menuParser(foods);
-
-				//clean up the foods
-
-				removed = menu.getRemoved();
-				if (foods.size() != 0)
+				//iterate through all the foods being ordered
+				for (int i = 0;i < foods.size();i++)
 				{
-					for (Integer j : removed)
-						foods.remove(j);
+					//iterate through the menus
+					for (int j = 0; j < items.menu.size();j++)
+					{
+						if ((items.menu.get(j).item).equals(foods.get(i)))
+						{
+							//adding the iterated items through the removing list
+							removed.add(i);
+							cost += items.menu.get(j).pence;
+						}
+					}
 				}
-				if (removed.size() != 0)
-					removed.clear();
 			}
+			//reducing the search counts by removing the items that's being searched
+			if (foods.size() != 0)
+			{
+				for (Integer index : removed)
+					foods.remove(index);
+			}
+			if (removed.size() != 0)
+				removed.clear();
 		}
 		catch (NullPointerException e)
         {
