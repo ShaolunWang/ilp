@@ -1,5 +1,6 @@
 package uk.ac.ed.inf;
 
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -41,12 +42,10 @@ public class Request
 			HttpRequest request = HttpRequest.newBuilder()
 									.uri(URI.create(loc))
 									.build();
-			HttpResponse<String> response = cliend.send(request, BodyHandlers.ofString());
-			return response.body;
-
-			return parsed;
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			return response.body();
 		}
-		catch(IOException e)
+		catch(IOException | InterruptedException e)
 		{
 			System.out.println("Exception caught: " + e);
 		}
