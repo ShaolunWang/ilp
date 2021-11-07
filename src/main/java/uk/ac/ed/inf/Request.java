@@ -11,7 +11,7 @@ import java.io.IOException;
  * and returning a `JsonArray` for any other module that calls it.
  */
 
-//TODO: use httpclient
+//TODO: debug httpclient 
 public class Request
 {
 	// hostname and port, with location
