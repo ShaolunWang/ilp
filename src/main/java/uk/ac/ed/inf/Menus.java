@@ -54,11 +54,11 @@ public class Menus
 					//iterate through the menus
 					for (int j = 0; j < items.menu.size();j++)
 					{
-						if ((items.menu.get(j).item).equals(foods.get(i)))
+						if ((items.menu.get(item)).equals(foods.get(i)))
 						{
 							//adding the iterated items through the removing list
 							removed.add(i);
-							cost += items.menu.get(j).pence;
+							cost += items.menu.get(item);
 						}
 					}
 				}
