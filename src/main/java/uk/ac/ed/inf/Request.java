@@ -1,12 +1,10 @@
 package uk.ac.ed.inf;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-//import java.net.URL;
-import java.HttpClient;
-import java.net.URLConnection;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This is the module for sending request to the web server
@@ -20,7 +18,7 @@ public class Request
 	private final String hostname;
 	private final String port;
 	private final String location;
-	private static final HttpClient cliendt = HttpClient.newHttpClient();
+	private static final HttpClient client = HttpClient.newHttpClient();
 
 	public Request(String hostname, String port, String location)
 	{
@@ -35,7 +33,7 @@ public class Request
 	 *  return the result in JsonArray form
 	 *	@return JsonArray if successfully fetched.
 	 */
-	public Reader requestAccess()
+	public String requestAccess()
 	{
 		String loc = "http://"+ hostname + ":" + port + location;
 		try
@@ -43,10 +41,8 @@ public class Request
 			HttpRequest request = HttpRequest.newBuilder()
 									.uri(URI.create(loc))
 									.build();
-			HttpRespoinse<String> response = cliend.send(request, BodyHandlers.ofString());
-
-			InputStreamReader parsed = new InputStreamReader(
-					(InputStream) fileRequest.getContent());
+			HttpResponse<String> response = cliend.send(request, BodyHandlers.ofString());
+			return response.body;
 
 			return parsed;
 		}
