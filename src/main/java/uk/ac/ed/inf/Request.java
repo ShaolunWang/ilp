@@ -12,6 +12,8 @@ import java.io.InputStream;
  * This is the module for sending request to the web server
  * and returning a `JsonArray` for any other module that calls it.
  */
+
+//TODO: use httpclient
 public class Request
 {
 	// hostname and port, with location
