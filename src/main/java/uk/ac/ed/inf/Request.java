@@ -1,9 +1,9 @@
-
 package uk.ac.ed.inf;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URL;
+//import java.net.URL;
+import java.HttpClient;
 import java.net.URLConnection;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +20,7 @@ public class Request
 	private final String hostname;
 	private final String port;
 	private final String location;
+	private static final HttpClient cliendt = HttpClient.newHttpClient();
 
 	public Request(String hostname, String port, String location)
 	{
@@ -39,11 +40,10 @@ public class Request
 		String loc = "http://"+ hostname + ":" + port + location;
 		try
 		{
-			// Url request;
-			URL url = new URL(loc);
-			URLConnection fileRequest = url.openConnection();
-			fileRequest.connect();
-			// fetch the file as InputStream;
+			HttpRequest request = HttpRequest.newBuilder()
+									.uri(URI.create(loc))
+									.build();
+			HttpRespoinse<String> response = cliend.send(request, BodyHandlers.ofString());
 
 			InputStreamReader parsed = new InputStreamReader(
 					(InputStream) fileRequest.getContent());
