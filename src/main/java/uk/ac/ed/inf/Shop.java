@@ -8,5 +8,11 @@ public class Shop
 {
 	String name;
 	String location;
-	public HashMap<String, Integer> menu;
+	public List<MenuItems> menu;
+	public static class MenuItems
+	{
+		String item;
+		int pence;
+	}
+}
 }

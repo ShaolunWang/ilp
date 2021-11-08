@@ -42,6 +42,7 @@ public class Menus
 
 		ArrayList<Integer> removed = new ArrayList<>();
 		ArrayList<String> foods = new ArrayList<>(Arrays.asList(order));
+		//TODO:hashmapping the item-pence
 
 		try
 		{
