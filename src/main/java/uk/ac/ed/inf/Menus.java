@@ -49,7 +49,6 @@ public class Menus
 		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccess(), listType);
 
 		ArrayList<HashMap<String, Integer>> hashShops = hashPence(shops);
-		cost+= calculateCost(hashShops, order);
 		return hashShops;
 
 	}
@@ -85,7 +84,7 @@ public class Menus
 					{
 						temp += items.get(food);
 					}
-	
+
 				}
 
 			}
@@ -94,7 +93,7 @@ public class Menus
         {
             System.out.println("Exception thrown: " + e);
         }
-		return temp/2;
+		return temp;
 	}
 
 }
