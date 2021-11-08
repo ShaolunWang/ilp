@@ -6,7 +6,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
 
 /**
  *  This is the module for menu access.
@@ -40,60 +42,52 @@ public class Menus
 		Type listType = new TypeToken<List<Shop>>(){}.getType();
 		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccess(), listType);
 
+		//Shop shopTest = gson.fromJson(getMenus.requestAccess(), Shop.class);
 		ArrayList<Integer> removed = new ArrayList<>();
 		ArrayList<String> foods = new ArrayList<>(Arrays.asList(order));
-		//TODO:hashmapping the item-pence
-		hashPence(shops);
+		ArrayList<HashMap<String, Integer>> hashShops;
+		//TODO:hashMapping the item-pence
+		hashShops = hashPence(shops);
 		try
 		{
 			//iterate through all the shops
-			for (Shop items: shops)
+			for (HashMap<String, Integer> items: hashShops)
 			{
+				System.out.println(items);
 				//iterate through all the foods being ordered
-				for (int i = 0;i < foods.size();i++)
+				for (int i = 0; i < foods.size(); i++)
 				{
-					//iterate through the menus
-					for (int j = 0; j < items.menu.size();j++)
+					if (items.containsKey(foods.get(i)))
 					{
-						if ((items.menu.get(item)).equals(foods.get(i)))
-						{
-							//adding the iterated items through the removing list
-							removed.add(i);
-							cost += items.menu.get(item);
-						}
+						cost+=items.get(foods.get(i));
+						foods.remove(i);
 					}
+
 				}
 			}
-			//reducing the search counts by removing the items that's being searched
-			if (foods.size() != 0)
-			{
-				for (Integer index : removed)
-					foods.remove(index);
-			}
-			if (removed.size() != 0)
-				removed.clear();
 		}
 		catch (NullPointerException e)
         {
             System.out.println("Exception thrown: " + e);
         }
+//		System.out.println(cost);
 		return cost;
 	}
-	private void hashmap(ArrayList<Shops> shop)
+
+	private ArrayList<HashMap<String, Integer>> hashPence(ArrayList<Shop> shops)
 	{
-		for (shop : Shops)
+		ArrayList<HashMap<String, Integer>> temp = new ArrayList<>();
+		for (Shop items: shops)
 		{
-			for (menu:shops)
+			for (int j = 0; j < items.menu.size(); j++)
 			{
-				for (int i = 0;i < menu.size();i++)
-				{
-					HashMap<String, Integer> itemPence = new HashMap<String, Integer>();
-					itemPence.put(menu.get(i).item, menu.get(i).pence);
-					menu.add(i);
-				}
-				menu.remove(i);
+				HashMap<String, Integer> itemPence = new HashMap<>();
+				itemPence.put(items.menu.get(j).item, items.menu.get(j).pence);
+				temp.add(itemPence);
 			}
 		}
+		System.out.println(temp);
+		return temp;
 	}
 
 }
