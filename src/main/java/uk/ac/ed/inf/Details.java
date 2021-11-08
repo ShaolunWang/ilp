@@ -1,37 +1,38 @@
 package uk.ac.ed.inf;
 
-import java.util.List;
 
 public class Details
 {
 	String country;
-	public List<SquareItems> square;
-	public class SquareItems
-	{
-		public List<SouthwestItems> southwest;
-		public List<NorthwestItems> northwest;
 
+	SquareItems square;
+	public static class SquareItems
+	{
+		SouthwestItems southwest;
 		public class SouthwestItems
 		{
 			double lng;
 			double lat;
 		}
-		public class NorthwestItems
+		NortheastItems northeast;
+		public class NortheastItems
 		{
 			double lng;
 			double lat;
 		}
-		String nearestPlace;
 	}
-	public List<CoordItems> coordinates;
-	public class CoordItems
+	String nearestPlace;
+	CoordItems coordinates;
+	public static class CoordItems
 	{
 		double lng;
 		double lat;
 	}
-	
+
 	String words;
 	String language;
 	String map;
 	
+
+
 }

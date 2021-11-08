@@ -2,54 +2,55 @@ package uk.ac.ed.inf;
 
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-
-import java.util.List;
 
 public class Location
 {
-	private String loc;
-	private final String hostname = "localhost";
-	private final String port     = "9898";
+	private final String loc;
+	private Details detail;
 	public Location(String input)
 	{
 		this.loc = concatLoc(input);
+		this.detail = getLoc();
 	}
 	
 	/**
 	 *  Connect to the server and return longlat obj
 	 *  @return LongLat obj 
  	 **/
-	public ArrayList<Details> getLoc()
+	public Details getLoc()
 	{
-		Request getLocation = new Request(hostname, port, loc);	
-		ArrayList<Details> details = toListLoc(getLocation);
-		return details;
+		String hostname = "localhost";
+		String port = "9898";
+		Request getLocation = new Request(hostname, port, loc);
+		return toDetailLoc(getLocation);
 	}
 	
-	private ArrayList<Details> toListLoc(Request getLocation)
+	private Details toDetailLoc(Request getLocation)
 	{
 		Gson gson = new Gson();
-		Type listType = new TypeToken<List<Shop>>(){}.getType();
-		ArrayList<Details> detail = gson.fromJson(getLocation.requestAccess(), listType);
-
-		
-		return detail;
+		//Type listType = new TypeToken<List<Details>>(){}.getType();
+		return gson.fromJson(getLocation.requestAccess(), Details.class);
 	}
 
 	private String concatLoc(String input)
 	{
-		String result = "/words";
+
+		StringBuilder result = new StringBuilder("/words");
 		String[] temp = input.split("\\.");
-		for (int i = 0;i < temp.length;i++)
+		for (String s : temp)
 		{
-			result += "/";
-			result += temp[i];
+			result.append("/");
+			result.append(s);
 		}
-		return result;
+		result.append("/details.json");
+		System.out.println(result.toString());
+		return result.toString();
 		
 	}
+
+	public void testPrint()
+	{
+		System.out.println(detail.country);
+	}
+
 }
