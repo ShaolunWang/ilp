@@ -1,3 +1,7 @@
+package uk.ac.ed.inf;
+
+import java.util.List;
+
 public class Details
 {
 	String country;
@@ -17,7 +21,7 @@ public class Details
 			double lng;
 			double lat;
 		}
-		String nearesPlace;
+		String nearestPlace;
 	}
 	public List<CoordItems> coordinates;
 	public class CoordItems
