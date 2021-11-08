@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,20 +36,20 @@ public class Menus
 	public int getDeliveryCost(String ...order)
 	{
 
-		Gson gson = new Gson();
 		Request getMenus = new Request(hostname, port,"/menus/menus.json");
-		toListShops(getMenus, order);
-		cost += calcuateCost(hashShops, order);
+		ArrayList<HashMap<String, Integer>> hashShops = toListShops(getMenus, order);
+		cost += calculateCost(hashShops, order);
 		
 		return cost;
 	}
-	private void toListShops(Request getMenus)
+	private ArrayList<HashMap<String, Integer>> toListShops(Request getMenus, String ...order)
 	{
+		Gson gson = new Gson();
 		Type listType = new TypeToken<List<Shop>>(){}.getType();
 		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccess(), listType);
-		ArrayList<HashMap<String, Integer>> hashShops;
 
 		ArrayList<HashMap<String, Integer>> hashShops = hashPence(shops);
+		cost+= calculateCost(hashShops, order);
 		return hashShops;
 
 	}
@@ -67,35 +66,35 @@ public class Menus
 				temp.add(itemPence);
 			}
 		}
-		System.out.println(temp);
 		return temp;
 	}
 
-	private Integer calcuateCost(ArrayList<HashMap<String, Integer>> hashShops, String ...foods)
+	private Integer calculateCost(ArrayList<HashMap<String, Integer>> hashShops, String ...foods)
 	{
-		int temp;
+		int temp = 0;
 		try
 		{
 			//iterate through all the shops
-			for (HashMap<String, Integer> items: hashShops)
+			for (String food : foods)
 			{
-				//iterate through all the foods being ordered
-				for (int i = 0; i < foods.size(); i++)
+				for (HashMap<String, Integer> items: hashShops)
 				{
-					if (items.containsKey(foods.get(i)))
-					{
-						temp+=items.get(foods.get(i));
-						foods.remove(i);
-					}
+				//iterate through all the foods being ordered
 
+					if (items.containsKey(food))
+					{
+						temp += items.get(food);
+					}
+	
 				}
+
 			}
 		}
 		catch (NullPointerException e)
         {
             System.out.println("Exception thrown: " + e);
         }
-		return temp;
+		return temp/2;
 	}
 
 }
