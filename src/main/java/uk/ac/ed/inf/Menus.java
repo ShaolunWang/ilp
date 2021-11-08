@@ -42,6 +42,7 @@ public class Menus
 		
 		return cost;
 	}
+
 	private ArrayList<HashMap<String, Integer>> toListShops(Request getMenus, String ...order)
 	{
 		Gson gson = new Gson();
