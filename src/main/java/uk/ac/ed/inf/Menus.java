@@ -43,7 +43,7 @@ public class Menus
 		ArrayList<Integer> removed = new ArrayList<>();
 		ArrayList<String> foods = new ArrayList<>(Arrays.asList(order));
 		//TODO:hashmapping the item-pence
-
+		hashPence(shops);
 		try
 		{
 			//iterate through all the shops
@@ -78,6 +78,22 @@ public class Menus
             System.out.println("Exception thrown: " + e);
         }
 		return cost;
+	}
+	private void hashmap(ArrayList<Shops> shop)
+	{
+		for (shop : Shops)
+		{
+			for (menu:shops)
+			{
+				for (int i = 0;i < menu.size();i++)
+				{
+					HashMap<String, Integer> itemPence = new HashMap<String, Integer>();
+					itemPence.put(menu.get(i).item, menu.get(i).pence);
+					menu.add(i);
+				}
+				menu.remove(i);
+			}
+		}
 	}
 
 }
