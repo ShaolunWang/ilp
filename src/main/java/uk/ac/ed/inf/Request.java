@@ -1,23 +1,25 @@
-
 package uk.ac.ed.inf;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This is the module for sending request to the web server
  * and returning a `JsonArray` for any other module that calls it.
  */
+
+//TODO: debug httpclient 
 public class Request
 {
 	// hostname and port, with location
 	private final String hostname;
 	private final String port;
 	private final String location;
+	private static final HttpClient client = HttpClient.newHttpClient();
 
 	public Request(String hostname, String port, String location)
 	{
@@ -32,23 +34,18 @@ public class Request
 	 *  return the result in JsonArray form
 	 *	@return JsonArray if successfully fetched.
 	 */
-	public Reader requestAccess()
+	public String requestAccess()
 	{
 		String loc = "http://"+ hostname + ":" + port + location;
 		try
 		{
-			// Url request;
-			URL url = new URL(loc);
-			URLConnection fileRequest = url.openConnection();
-			fileRequest.connect();
-			// fetch the file as InputStream;
-
-			InputStreamReader parsed = new InputStreamReader(
-					(InputStream) fileRequest.getContent());
-
-			return parsed;
+			HttpRequest request = HttpRequest.newBuilder()
+									.uri(URI.create(loc))
+									.build();
+			HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+			return response.body();
 		}
-		catch(IOException e)
+		catch(IOException | InterruptedException e)
 		{
 			System.out.println("Exception caught: " + e);
 		}

@@ -14,4 +14,5 @@ public class Shop
 		String item;
 		int pence;
 	}
+
 }
