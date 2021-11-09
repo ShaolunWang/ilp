@@ -47,7 +47,7 @@ public class Menus
 	{
 		Gson gson = new Gson();
 		Type listType = new TypeToken<List<Shop>>(){}.getType();
-		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccess(), listType);
+		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccessHttp(), listType);
 
 		ArrayList<HashMap<String, Integer>> hashShops = hashPence(shops);
 		return hashShops;

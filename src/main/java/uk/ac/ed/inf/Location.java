@@ -32,7 +32,7 @@ public class Location
 	{
 		Gson gson = new Gson();
 		//Type listType = new TypeToken<List<Details>>(){}.getType();
-		return gson.fromJson(getLocation.requestAccess(), Details.class);
+		return gson.fromJson(getLocation.requestAccessHttp(), Details.class);
 	}
 
 	private String concatLoc(String input)

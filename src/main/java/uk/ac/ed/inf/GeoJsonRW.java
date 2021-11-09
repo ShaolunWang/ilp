@@ -35,8 +35,8 @@ public class GeoJsonRW
 		Request getGeoJson = new Request(hostname, port, loc);
 		try
 		{
-			System.out.println(getGeoJson.requestAccess());
-			FeatureCollection fc  = FeatureCollection.fromJson(getGeoJson.requestAccess());
+			System.out.println(getGeoJson.requestAccessHttp());
+			FeatureCollection fc  = FeatureCollection.fromJson(getGeoJson.requestAccessHttp());
 
 			return fc.features();
 		}

@@ -34,7 +34,7 @@ public class Request
 	 *  return the result in JsonArray form
 	 *	@return JsonArray if successfully fetched.
 	 */
-	public String requestAccess()
+	public String requestAccessHttp()
 	{
 		String loc = "http://"+ hostname + ":" + port + location;
 		try
