@@ -1,24 +1,23 @@
 package uk.ac.ed.inf;
 
-import com.mapbox.geojson;
+import com.mapbox.geojson.*;
 
-import com.mapbox.geojson.FeatureCollection;
-import com.mapbox.geojson.Feature
+import java.util.List;
 
 public class GeoJsonRW
 {
 	private final String hostname;
-	private final String port
+	private final String port;
 	private final String filename;
-	public ArrayList<Features> f;
-		
+	public List<Feature> fc;
+
 	public GeoJsonRW(String hostname, String port, String filename)
 	{
 		this.hostname = hostname;
 		this.port     = port;
 		this.filename = filename;
-		this.f 		  = readGeoJson(filename);
-		
+		this.fc		  = readGeoJson();
+
 	}
 	/*
 	 * f source is a GeoJSON string then
@@ -29,15 +28,15 @@ public class GeoJsonRW
 	 *     • If g is an instanceof Polygon then (Polygon)g is a Polygon.
 	 */
 
-	public readGeoJson()
+	public List<Feature> readGeoJson()
 	{
-		String loc = "/buildings/"+filename;
+		String loc = "/buildings/"+ this.filename;
 
 		Request getGeoJson = new Request(hostname, port, loc);
-		typeOfGeoJson = getClass(getGeoJson.)
 		try
 		{
-			FeatureCollection fc  = FeatureCollection.fromJson(getGeoJson.requestAcess());
+			System.out.println(getGeoJson.requestAccess());
+			FeatureCollection fc  = FeatureCollection.fromJson(getGeoJson.requestAccess());
 
 			return fc.features();
 		}
@@ -45,30 +44,37 @@ public class GeoJsonRW
 		{
 			System.err.println("Not Feature Objects!");
 		}
-		
+		return null;
 	}
-	public getGeometry(Feature f, int i)
+	public Geometry getGeometry(int i)
 	{
-		if (f isInstanceOf Geometry)
-			return f.geometry();
-		else
+		if (fc.get(i) instanceof Feature)
 		{
-			System.err.println("Not Geometry Object");
-			return Null;
+			return fc.get(i).geometry();
 		}
+		return null;
 	}
-	public getShape(Geometry g, int i)
+
+	/*
+	public Polygon getPolygon(Geometry g)
 	{
-		if (g isInstanceOf Polygon)
+		if (g instanceof Polygon)
 			return (Polygon)g;
-		else if (g isInstanceOf LineString)
-			return (LineString)g;
-		else if (g isInstanceOf Point)
-			return (Point)g;
-		else
-		{
-			System.err.println("Not Geometry Object");
-			return Null;
-		}
+
+
+			return null;
 	}
+	public LineString getLineString(Geometry g)
+	{
+		if (g instanceof LineString)
+			return (LineString)g;
+		return null;
+	}
+	public Point getPoint(Geometry g)
+	{
+		if (g instanceof Point)
+			return (Point)g;
+		return null;
+	}
+	*/
 }

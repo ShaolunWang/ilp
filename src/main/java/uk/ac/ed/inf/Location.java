@@ -7,9 +7,13 @@ public class Location
 {
 	private final String loc;
 	private Details detail;
-	public Location(String input)
+	private final String hostname;
+	private final String port ;
+	public Location(String input, String hostname, String port)
 	{
 		this.loc = concatLoc(input);
+		this.port = "9898";
+		this.hostname = "localhost";;
 		this.detail = getLoc();
 	}
 	
@@ -19,8 +23,7 @@ public class Location
  	 **/
 	public Details getLoc()
 	{
-		String hostname = "localhost";
-		String port = "9898";
+
 		Request getLocation = new Request(hostname, port, loc);
 		return toDetailLoc(getLocation);
 	}
