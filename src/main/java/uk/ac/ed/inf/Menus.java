@@ -36,9 +36,9 @@ public class Menus
 	 */
 	public int getDeliveryCost(String ...order)
 	{
-
+		cost = 50;
 		Request getMenus = new Request(hostname, port,"/menus/menus.json");
-		ArrayList<HashMap<String, Integer>> hashShops = tohashShops(toListShops(getMenus, order));
+		ArrayList<HashMap<String, Integer>> hashShops = toHashShops(toListShops(getMenus, order));
 		cost += calculateCost(hashShops, order);
 		
 		return cost;
@@ -53,7 +53,7 @@ public class Menus
 
 		return shops;
 	}
-	private @NotNull ArrayList<HashMap<String, Integer>> tohashShops(ArrayList<Shop> shops)
+	private @NotNull ArrayList<HashMap<String, Integer>> toHashShops(ArrayList<Shop> shops)
 	{
 		ArrayList<HashMap<String, Integer>> hashShops = hashPence(shops);
 		return hashShops;
@@ -87,9 +87,9 @@ public class Menus
 
 					if (items.containsKey(food))
 					{
+						System.out.println(items);
 						temp += items.get(food);
 					}
-
 				}
 
 			}
