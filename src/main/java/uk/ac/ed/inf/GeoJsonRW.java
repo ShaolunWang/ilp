@@ -91,7 +91,7 @@ public class GeoJsonRW
 		return FeatureCollection.fromFeature(f);
 	}
 
-	public String mkJsonString(@NotNull FeatureCollection fc)
+	public String mkJson(@NotNull FeatureCollection fc)
 	{
 		return fc.toJson();
 	}
