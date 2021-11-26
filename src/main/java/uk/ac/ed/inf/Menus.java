@@ -2,6 +2,7 @@ package uk.ac.ed.inf;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -37,24 +38,27 @@ public class Menus
 	{
 
 		Request getMenus = new Request(hostname, port,"/menus/menus.json");
-		ArrayList<HashMap<String, Integer>> hashShops = toListShops(getMenus, order);
+		ArrayList<HashMap<String, Integer>> hashShops = tohashShops(toListShops(getMenus, order));
 		cost += calculateCost(hashShops, order);
 		
 		return cost;
 	}
 
-	private ArrayList<HashMap<String, Integer>> toListShops(Request getMenus, String ...order)
+	public ArrayList<Shop> toListShops(@NotNull Request getMenus, String ...order)
 	{
+		// might need to retrieve all the values using this method
 		Gson gson = new Gson();
 		Type listType = new TypeToken<List<Shop>>(){}.getType();
 		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccessHttp(), listType);
 
+		return shops;
+	}
+	private @NotNull ArrayList<HashMap<String, Integer>> tohashShops(ArrayList<Shop> shops)
+	{
 		ArrayList<HashMap<String, Integer>> hashShops = hashPence(shops);
 		return hashShops;
-
 	}
-
-	private ArrayList<HashMap<String, Integer>> hashPence(ArrayList<Shop> shops)
+	private @NotNull ArrayList<HashMap<String, Integer>> hashPence(@NotNull ArrayList<Shop> shops)
 	{
 		ArrayList<HashMap<String, Integer>> temp = new ArrayList<>();
 		for (Shop items: shops)

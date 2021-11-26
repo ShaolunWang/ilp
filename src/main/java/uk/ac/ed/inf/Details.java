@@ -32,7 +32,4 @@ public class Details
 	String words;
 	String language;
 	String map;
-	
-
-
 }

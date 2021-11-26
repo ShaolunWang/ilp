@@ -1,7 +1,9 @@
 package uk.ac.ed.inf;
 
 import com.mapbox.geojson.*;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GeoJsonRW
@@ -55,7 +57,6 @@ public class GeoJsonRW
 		return null;
 	}
 
-	/*
 	public Polygon getPolygon(Geometry g)
 	{
 		if (g instanceof Polygon)
@@ -76,5 +77,28 @@ public class GeoJsonRW
 			return (Point)g;
 		return null;
 	}
-	*/
+
+	public FeatureCollection mkFC(LongLat @NotNull ... x)
+	{
+		ArrayList<Point> points = new ArrayList<>();
+		for (LongLat items : x)
+		{
+			Point p = Point.fromLngLat(items.longitude, items.latitude);
+			points.add(p);
+		}
+		LineString ls = LineString.fromLngLats(points);
+		Feature f     = Feature.fromGeometry(ls);
+		return FeatureCollection.fromFeature(f);
+	}
+
+	public String mkJsonString(@NotNull FeatureCollection fc)
+	{
+		return fc.toJson();
+	}
 }
+
+
+
+
+
+

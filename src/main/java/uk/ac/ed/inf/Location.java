@@ -2,11 +2,12 @@ package uk.ac.ed.inf;
 
 
 import com.google.gson.Gson;
+import org.jetbrains.annotations.NotNull;
 
 public class Location
 {
 	private final String loc;
-	private Details detail;
+	private final Details detail;
 	private final String hostname;
 	private final String port ;
 	public Location(String input, String hostname, String port)
@@ -28,14 +29,14 @@ public class Location
 		return toDetailLoc(getLocation);
 	}
 	
-	private Details toDetailLoc(Request getLocation)
+	private Details toDetailLoc(@NotNull Request getLocation)
 	{
 		Gson gson = new Gson();
 		//Type listType = new TypeToken<List<Details>>(){}.getType();
 		return gson.fromJson(getLocation.requestAccessHttp(), Details.class);
 	}
 
-	private String concatLoc(String input)
+	private @NotNull String concatLoc(@NotNull String input)
 	{
 
 		StringBuilder result = new StringBuilder("/words");
@@ -48,12 +49,6 @@ public class Location
 		result.append("/details.json");
 		System.out.println(result.toString());
 		return result.toString();
-		
-	}
-
-	public void testPrint()
-	{
-		System.out.println(detail.country);
 	}
 
 }
