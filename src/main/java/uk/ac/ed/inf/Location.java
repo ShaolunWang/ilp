@@ -13,8 +13,8 @@ public class Location
 	public Location(String input, String hostname, String port)
 	{
 		this.loc = concatLoc(input);
-		this.port = "9898";
-		this.hostname = "localhost";;
+		this.port = port;
+		this.hostname = hostname;
 		this.detail = getLoc();
 	}
 	

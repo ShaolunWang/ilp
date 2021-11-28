@@ -17,6 +17,11 @@ public class Test
             System.out.println(t.getDeliveryCost(menuTest.get(i).getVararg()));
         }
 
-		System.out.println(t.getShopLoc());
+		ArrayList<String> locList = t.getShopLoc();
+		for (String loc : locList)	
+		{
+			Location x = New Location(loc, "localhost", "9898");
+			System.out.println(x.detail.coordinates)
+		}
     }
 }
