@@ -16,15 +16,14 @@ import java.util.List;
  */
 public class Menus
 {
-	private final String hostname;
-	private final String port;
-	private int cost;
+	private final ArrayList<HashMap<String, Integer>> hashShops;
+	private final ArrayList<String> shopLoc;
 
 	public Menus(String hostname, String port)
 	{
-		this.hostname = hostname;
-		this.port     = port;
-		this.cost     = 50; // only do += on this
+		Request getMenus = new Request(hostname, port, "/menus/menus.json");
+		this.shopLoc = new ArrayList<>();
+		this.hashShops = toHashShops(toListShops(getMenus));
 	}
 
 	/**
@@ -36,33 +35,21 @@ public class Menus
 	 */
 	public int getDeliveryCost(String ...order)
 	{
-		cost = 50;
-		Request getMenus = new Request(hostname, port,"/menus/menus.json");
-		ArrayList<HashMap<String, Integer>> hashShops = toHashShops(toListShops(getMenus, order));
+		int cost = 50;
 		cost += calculateCost(hashShops, order);
-		
 		return cost;
 	}
-
-	public ArrayList<Shop> toListShops(@NotNull Request getMenus, String ...order)
+	public ArrayList<String> getw3wLoc()
 	{
-		// might need to retrieve all the values using this method
-		Gson gson = new Gson();
-		Type listType = new TypeToken<List<Shop>>(){}.getType();
-		ArrayList<Shop> shops = gson.fromJson(getMenus.requestAccessHttp(), listType);
+		return this.shopLoc;
+	}
 
-		return shops;
-	}
-	private @NotNull ArrayList<HashMap<String, Integer>> toHashShops(ArrayList<Shop> shops)
-	{
-		ArrayList<HashMap<String, Integer>> hashShops = hashPence(shops);
-		return hashShops;
-	}
 	private @NotNull ArrayList<HashMap<String, Integer>> hashPence(@NotNull ArrayList<Shop> shops)
 	{
 		ArrayList<HashMap<String, Integer>> temp = new ArrayList<>();
 		for (Shop items: shops)
 		{
+			this.shopLoc.add(items.location);
 			for (int j = 0; j < items.menu.size(); j++)
 			{
 				HashMap<String, Integer> itemPence = new HashMap<>();
@@ -99,6 +86,19 @@ public class Menus
             System.out.println("Exception thrown: " + e);
         }
 		return temp;
+	}
+
+	private ArrayList<Shop> toListShops(@NotNull Request getMenus)
+	{
+		// might need to retrieve all the values using this method
+		Gson gson = new Gson();
+		Type listType = new TypeToken<List<Shop>>(){}.getType();
+
+		return gson.fromJson(getMenus.requestAccessHttp(), listType);
+	}
+	private @NotNull ArrayList<HashMap<String, Integer>> toHashShops(ArrayList<Shop> shops)
+	{
+		return hashPence(shops);
 	}
 
 }
