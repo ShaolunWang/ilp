@@ -40,6 +40,7 @@ public class Menus
 		return cost;
 	}
 
+
 	private @NotNull ArrayList<HashMap<String, Integer>> hashPence(@NotNull ArrayList<Shop> shops)
 	{
 		ArrayList<HashMap<String, Integer>> temp = new ArrayList<>();
