@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class Test
+public class App
 {
     public static void main(String[] args) throws ParseException, SQLException 
 	{
