@@ -8,7 +8,7 @@ public class Test
 {
     public static void main(String[] args) throws ParseException, SQLException 
 	{
-        DerbyIO test = new DerbyIO("localhost", "9876", "derbyDB");
+        DerbyIO test = new DerbyIO("localhost", "1527", "derbyDB");
         ArrayList<Order> menuTest = test.readDerbyOrderNo("2022-04-11");
 
         Menus t = new Menus("localhost", "9898");
@@ -19,11 +19,14 @@ public class Test
 
 		System.out.println("-------------");
 
-		ArrayList<String> locList = t.getShopLoc();
-		for (String loc : locList)	
+		ArrayList<String> detailList = t.getShopLoc();
+		ArrayList<LongLat> shopLocList  = new ArrayList<>();
+		for (String loc : detailList)	
 		{
-			Location x = New Location(loc, "localhost", "9898");
-			System.out.println(x.detail.coordinates);
-		}
+			Location x = new Location(loc, "localhost", "9898");
+            LongLat shop = new LongLat(x.getDetails().coordinates.lat, x.getDetails().coordinates.lng);
+            shopLocList.add(shop);
+        }
+
     }
 }
