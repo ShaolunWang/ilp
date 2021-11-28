@@ -17,7 +17,7 @@ public class Order
 		this.foodDetail = foodDetail;
 	}
 
-	public String[] getVararg()
+	public String[] getFood()
 	{
 		return foodDetail.toArray(new String[foodDetail.size()]);
 	}

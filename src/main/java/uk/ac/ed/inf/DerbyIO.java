@@ -40,8 +40,6 @@ public class DerbyIO {
                 Order temp = new Order(num, customer, dt, getFood(num));
                 orderList.add(temp);
             }
-
-
         }
         catch (Exception e)
         {

@@ -11,10 +11,11 @@ public class Test
         DerbyIO test = new DerbyIO("localhost", "1527", "derbyDB");
         ArrayList<Order> menuTest = test.readDerbyOrderNo("2022-04-11");
 
+		System.out.println(menuTest.get(0).deliverTo);
         Menus t = new Menus("localhost", "9898");
         for (int i = 0; i < menuTest.size();i++)
         {
-            System.out.println(t.getDeliveryCost(menuTest.get(i).getVararg()));
+            System.out.println(t.getDeliveryCost(menuTest.get(i).getFood()));
         }
 
 		System.out.println("-------------");
@@ -27,6 +28,5 @@ public class Test
             LongLat shop = new LongLat(x.getDetails().coordinates.lat, x.getDetails().coordinates.lng);
             shopLocList.add(shop);
         }
-
     }
 }
