@@ -38,6 +38,7 @@ public class Location
 
 	private @NotNull String concatLoc(@NotNull String input)
 	{
+		// construct request
 
 		StringBuilder result = new StringBuilder("/words");
 		String[] temp = input.split("\\.");
@@ -50,5 +51,4 @@ public class Location
 		System.out.println(result.toString());
 		return result.toString();
 	}
-
 }
