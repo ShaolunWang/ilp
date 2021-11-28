@@ -68,6 +68,4 @@ public class DerbyIO {
         }
         return food;
     }
-
-
 }
