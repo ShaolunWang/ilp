@@ -21,4 +21,8 @@ public class Order
 	{
 		return foodDetail.toArray(new String[foodDetail.size()]);
 	}
+	public String getDeliverTo()
+	{
+		return this.deliverTo;
+	}
 }
