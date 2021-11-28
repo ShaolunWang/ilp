@@ -21,8 +21,10 @@ public class Order
 	{
 		return foodDetail.toArray(new String[foodDetail.size()]);
 	}
-	public String getDeliverTo()
+	public LongLat getDeliverTo()
 	{
-		return this.deliverTo;
+		Location x = new Location(this.deliverTo, "localhost", "9898");
+		LongLat y = new LongLat(x.getDetails().coordinates.lat, x.getDetails().coordinates.lng);
+		return y;
 	}
 }

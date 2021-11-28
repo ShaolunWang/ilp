@@ -12,9 +12,9 @@ public class App
         ArrayList<Order> menuTest = test.readDerbyOrderNo("2022-04-11");
 
 		ArrayList<LongLat> deliverLoc = new ArrayList<>();
-		for (String loc : menuTest)
+		for (Order o : menuTest)
 		{
-			deliverLoc.add(menuTest.get(i).getDeliverTo());
+			deliverLoc.add(o.getDeliverTo());
 		}
         Menus t = new Menus("localhost", "9898");
         for (int i = 0; i < menuTest.size();i++)
