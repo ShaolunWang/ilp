@@ -39,10 +39,6 @@ public class Menus
 		cost += calculateCost(hashShops, order);
 		return cost;
 	}
-	public ArrayList<String> getw3wLoc()
-	{
-		return this.shopLoc;
-	}
 
 	private @NotNull ArrayList<HashMap<String, Integer>> hashPence(@NotNull ArrayList<Shop> shops)
 	{
@@ -99,6 +95,10 @@ public class Menus
 	private @NotNull ArrayList<HashMap<String, Integer>> toHashShops(ArrayList<Shop> shops)
 	{
 		return hashPence(shops);
+	}
+	public ArrayList<String> getShopLoc()
+	{
+		return this.shopLoc;
 	}
 
 }
