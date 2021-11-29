@@ -3,13 +3,15 @@ package uk.ac.ed.inf;
 import java.sql.*;
 import java.util.ArrayList;
 import java.sql.Date;
-public class DerbyIO {
+public class DerbyIO
+{
     private final String hostname;
     private final String port;
     private final String location;
     private final String jbdcString;
     private Connection conn;
-    public DerbyIO(String hostname, String port, String location) throws SQLException {
+    public DerbyIO(String hostname, String port, String location) throws SQLException
+    {
         this.hostname = hostname;
         this.port = port;
         this.location = location;

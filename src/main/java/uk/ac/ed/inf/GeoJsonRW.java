@@ -1,6 +1,7 @@
 package uk.ac.ed.inf;
 
 import com.mapbox.geojson.*;
+import com.mapbox.turf.TurfMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class GeoJsonRW
 	private final String hostname;
 	private final String port;
 	private final String filename;
-	public List<Feature> fc;
+	public FeatureCollection fc;
 
 	public GeoJsonRW(String hostname, String port, String filename)
 	{
@@ -30,8 +31,8 @@ public class GeoJsonRW
 	 *     • If g is an instanceof Polygon then (Polygon)g is a Polygon.
 	 */
 
-	public List<Feature> readGeoJson()
-	{
+	private FeatureCollection readGeoJson()
+	{ 
 		String loc = "/buildings/"+ this.filename;
 
 		Request getGeoJson = new Request(hostname, port, loc);
@@ -40,7 +41,7 @@ public class GeoJsonRW
 			System.out.println(getGeoJson.requestAccessHttp());
 			FeatureCollection fc  = FeatureCollection.fromJson(getGeoJson.requestAccessHttp());
 
-			return fc.features();
+			return fc;
 		}
 		catch(Exception e)
 		{
@@ -48,11 +49,11 @@ public class GeoJsonRW
 		}
 		return null;
 	}
-	public Geometry getGeometry(int i)
+	public Geometry getGeometry(Feature f)
 	{
-		if (fc.get(i) instanceof Feature)
+		if (f instanceof Feature)
 		{
-			return fc.get(i).geometry();
+			return f.geometry();
 		}
 		return null;
 	}
@@ -95,6 +96,27 @@ public class GeoJsonRW
 	{
 		return fc.toJson();
 	}
+	public ArrayList<ArrayList<LongLat>> getNoFlyZonePoints()
+	{
+		ArrayList<ArrayList<LongLat>> noFlyZonePoints = new ArrayList<ArrayList<LongLat>>();
+		for (Feature f: this.fc.features())
+		{
+			ArrayList<LongLat> singleNoFlyZone = new ArrayList<LongLat>();
+			for (Point p: TurfMeta.coordAll(getLineString(getGeometry(f))))
+			{
+				singleNoFlyZone.add(toLongLat(p));
+			}
+			
+			noFlyZonePoints.add(singleNoFlyZone);
+		}
+		return noFlyZonePoints;
+	}	
+	public LongLat toLongLat(Point p)
+	{
+		LongLat pos = new LongLat(p.longitude(), p.latitude());
+		return pos;
+	}
+
 }
 
 
