@@ -38,7 +38,6 @@ public class GeoJsonRW
 		Request getGeoJson = new Request(hostname, port, loc);
 		try
 		{
-			System.out.println(getGeoJson.requestAccessHttp());
 			FeatureCollection fc  = FeatureCollection.fromJson(getGeoJson.requestAccessHttp());
 
 			return fc;
@@ -49,35 +48,7 @@ public class GeoJsonRW
 		}
 		return null;
 	}
-	public Geometry getGeometry(Feature f)
-	{
-		if (f instanceof Feature)
-		{
-			return f.geometry();
-		}
-		return null;
-	}
 
-	public Polygon getPolygon(Geometry g)
-	{
-		if (g instanceof Polygon)
-			return (Polygon)g;
-
-
-			return null;
-	}
-	public LineString getLineString(Geometry g)
-	{
-		if (g instanceof LineString)
-			return (LineString)g;
-		return null;
-	}
-	public Point getPoint(Geometry g)
-	{
-		if (g instanceof Point)
-			return (Point)g;
-		return null;
-	}
 
 	public FeatureCollection mkFC(LongLat @NotNull ... x)
 	{
@@ -102,7 +73,8 @@ public class GeoJsonRW
 		for (Feature f: this.fc.features())
 		{
 			ArrayList<LongLat> singleNoFlyZone = new ArrayList<LongLat>();
-			for (Point p: TurfMeta.coordAll(getLineString(getGeometry(f))))
+			System.out.println("a");
+			for (Point p: TurfMeta.coordAll(f, false))
 			{
 				singleNoFlyZone.add(toLongLat(p));
 			}
