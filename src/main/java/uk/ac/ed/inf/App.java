@@ -39,7 +39,7 @@ public class App
         }
 		//get noflyzone
         GeoJsonRW noFly = new GeoJsonRW("localhost", "9898", "no-fly-zones.geojson");
-
-		System.out.println(noFly.getNoFlyZonePoints());
+        noFly.readGeoJson();
+		ArrayList<ArrayList<LongLat>>  noFlyZoneLongLat = noFly.getNoFlyZonePoints();
     }
 }

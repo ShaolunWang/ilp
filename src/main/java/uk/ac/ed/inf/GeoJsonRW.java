@@ -19,7 +19,6 @@ public class GeoJsonRW
 		this.hostname = hostname;
 		this.port     = port;
 		this.filename = filename;
-		this.fc		  = readGeoJson();
 
 	}
 	/*
@@ -31,22 +30,20 @@ public class GeoJsonRW
 	 *     • If g is an instanceof Polygon then (Polygon)g is a Polygon.
 	 */
 
-	private FeatureCollection readGeoJson()
+	public void readGeoJson()
 	{ 
 		String loc = "/buildings/"+ this.filename;
 
 		Request getGeoJson = new Request(hostname, port, loc);
 		try
 		{
-			FeatureCollection fc  = FeatureCollection.fromJson(getGeoJson.requestAccessHttp());
+			fc  = FeatureCollection.fromJson(getGeoJson.requestAccessHttp());
 
-			return fc;
 		}
 		catch(Exception e)
 		{
 			System.err.println("Not Feature Objects!");
 		}
-		return null;
 	}
 
 
