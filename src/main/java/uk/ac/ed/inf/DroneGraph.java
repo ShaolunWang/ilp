@@ -11,6 +11,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.awt.geom.Line2D;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,7 +24,7 @@ public class DroneGraph
         this.hashedVertices = hashedVertices;
     }
 
-    public void getPath(ArrayList<Line2D> noFly)
+    public void getPath(ArrayList<ArrayList<Line2D>> noFly)
     {
         //AT
         LongLat CurrentPos = new LongLat(3.186874,5.944494);
@@ -67,13 +68,14 @@ public class DroneGraph
         }
 
     }
-    private Double getDistance(LongLat v1, LongLat v2, ArrayList<Line2D> noFly)
+    private Double getDistance(LongLat v1, LongLat v2, ArrayList<ArrayList<Line2D>> noFly)
     {
         Line2D e = new Line2D.Double(v1.longitude, v1.latitude, v2.longitude, v2.latitude);
-        for (Line2D i : noFly)
+        for (ArrayList<Line2D> j : noFly)
         {
-            if (e.intersectsLine(i))
-                return 50000.0;
+            for (Line2D i : j)
+                if (e.intersectsLine(i))
+                    return 50000.0;
         }
         return v1.distanceTo(v2);
     }
