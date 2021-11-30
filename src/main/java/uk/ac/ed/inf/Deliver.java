@@ -6,6 +6,7 @@ public class Deliver
 {
 	public Deliver()
 	{
+		;
 	}
 
 }

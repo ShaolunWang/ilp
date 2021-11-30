@@ -1,6 +1,7 @@
 package uk.ac.ed.inf;
 
 import java.awt.geom.Line2D;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class NoFlyZone
@@ -10,10 +11,12 @@ public class NoFlyZone
 	public NoFlyZone(ArrayList<ArrayList<LongLat>> corners)
 	{
 		this.corners = corners;
+		this.edges = toLine2D();
 	}
 
-	public void toLine2D()
+	public ArrayList<Line2D> toLine2D()
 	{
+		ArrayList<Line2D> edges = new ArrayList<>();
 		for (ArrayList<LongLat> zones : corners)
 		{
 			for (int i = 0; i < zones.size();i++)
@@ -24,19 +27,17 @@ public class NoFlyZone
 				{
 					Line2D e = new Line2D.Double(zones.get(i).longitude, zones.get(i).latitude,
 								  zones.get(i+1).longitude, zones.get(i).latitude);
-					this.edges.add(e);
+					edges.add(e);
 				}
 			}
 		}
+		return edges;
 	}
-	public boolean isIntersect(Line2D path)
+
+	public ArrayList<Line2D> getEdgeNoFly()
 	{
-		for (Line2D e : edges)	
-		{
-			if (path.intersectsLine(e))
-				return true;
-		}
-		return false;
+		return this.edges;
 	}
+
 
 }

@@ -16,14 +16,16 @@ import java.util.List;
  */
 public class Menus
 {
-	private final ArrayList<HashMap<String, Integer>> hashShops;
-	private final ArrayList<String> shopLoc;
+	private final ArrayList<HashMap<String, Integer>> hashShopsItems;
+	private final ArrayList<String> orderLoc; // all shops getting orders
 
 	public Menus(String hostname, String port)
 	{
 		Request getMenus = new Request(hostname, port, "/menus/menus.json");
-		this.shopLoc = new ArrayList<>();
-		this.hashShops = toHashShops(toListShops(getMenus));
+		this.orderLoc = new ArrayList<>();
+		this.hashShopsItems = toHashShops(toListShops(getMenus));
+
+
 	}
 
 	/**
@@ -36,9 +38,10 @@ public class Menus
 	public int getDeliveryCost(String ...order)
 	{
 		int cost = 50;
-		cost += calculateCost(hashShops, order);
+		cost += calculateCost(hashShopsItems, order);
 		return cost;
 	}
+
 
 
 	private @NotNull ArrayList<HashMap<String, Integer>> hashPence(@NotNull ArrayList<Shop> shops)
@@ -46,11 +49,12 @@ public class Menus
 		ArrayList<HashMap<String, Integer>> temp = new ArrayList<>();
 		for (Shop items: shops)
 		{
-			this.shopLoc.add(items.location);
+
 			for (int j = 0; j < items.menu.size(); j++)
 			{
 				HashMap<String, Integer> itemPence = new HashMap<>();
 				itemPence.put(items.menu.get(j).item, items.menu.get(j).pence);
+				orderLoc.add(items.location);
 				temp.add(itemPence);
 			}
 		}
@@ -65,14 +69,13 @@ public class Menus
 			//iterate through all the shops
 			for (String food : foods)
 			{
-				for (HashMap<String, Integer> items: hashShops)
+				for (HashMap<String, Integer> hashShop : hashShops)
 				{
-				//iterate through all the foods being ordered
+					//iterate through all the foods being ordered
 
-					if (items.containsKey(food))
+					if (hashShop.containsKey(food))
 					{
-						System.out.println(items);
-						temp += items.get(food);
+						temp += hashShop.get(food);
 					}
 				}
 
@@ -97,9 +100,25 @@ public class Menus
 	{
 		return hashPence(shops);
 	}
-	public ArrayList<String> getShopLoc()
+	public ArrayList<String> getFoodLoc(String ...foods)
 	{
-		return this.shopLoc;
+		final ArrayList<String> foodLoc = new ArrayList<>();
+
+		for (String food : foods)
+		{
+			for (int i = 0; i < hashShopsItems.size(); i++)
+			{
+				//iterate through all the foods being ordered
+
+				if (hashShopsItems.get(i).containsKey(food))
+				{
+					if (!foodLoc.contains(orderLoc.get(i)))
+						foodLoc.add(this.orderLoc.get(i));
+				}
+			}
+
+		}
+		return foodLoc;
 	}
 
 }
