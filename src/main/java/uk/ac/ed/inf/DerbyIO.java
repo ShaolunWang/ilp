@@ -1,22 +1,24 @@
 package uk.ac.ed.inf;
 
+
 import java.sql.*;
 import java.util.ArrayList;
-import java.sql.Date;
+
 public class DerbyIO
 {
     private final String hostname;
     private final String port;
+
     private final String location;
     private final String jbdcString;
-    private Connection conn;
+    private final Connection conn;
     public DerbyIO(String hostname, String port, String location) throws SQLException
     {
         this.hostname = hostname;
         this.port = port;
         this.location = location;
-        this.jbdcString = "jdbc:derby://" + hostname + ":" + port + "/" + location;
-        this.conn = DriverManager.getConnection(this.jbdcString);
+        jbdcString = "jdbc:derby://" + hostname + ":" + port + "/" + location;
+        this.conn = DriverManager.getConnection(jbdcString);
     }
 
     public ArrayList<Order> readDerbyOrderNo(String day)

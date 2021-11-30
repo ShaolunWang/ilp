@@ -1,5 +1,6 @@
 package uk.ac.ed.inf;
 
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -21,13 +22,6 @@ public class App
         Menus t = new Menus("localhost", "9898");
 
 		//get Cost
-        for (Order order : menuTest)
-        {
-            System.out.println(t.getDeliveryCost(order.getFood()));
-        }
-
-		System.out.println("-------------");
-
 		ArrayList<String> detailList = t.getShopLoc();
 		ArrayList<LongLat> shopLocList  = new ArrayList<>();
 		// get shop loc
@@ -40,6 +34,6 @@ public class App
 		//get noflyzone
         GeoJsonRW noFly = new GeoJsonRW("localhost", "9898", "no-fly-zones.geojson");
         noFly.readGeoJson();
-		ArrayList<ArrayList<LongLat>>  noFlyZoneLongLat = noFly.getNoFlyZonePoints();
+		NoFlyZone zone = new NoFlyZone(noFly.getNoFlyZonePoints());
     }
 }

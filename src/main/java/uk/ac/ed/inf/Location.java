@@ -48,7 +48,6 @@ public class Location
 			result.append(s);
 		}
 		result.append("/details.json");
-		System.out.println(result.toString());
 		return result.toString();
 	}
 	public Details getDetails()

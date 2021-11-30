@@ -8,7 +8,7 @@ public class LongLat
 {
     public double longitude;
     public double latitude;
-    private double angle;
+    public double angle;
 	private static final double move = 0.00015;
 
     public LongLat(double longitude, double latitude)
