@@ -47,11 +47,12 @@ public class GeoJsonRW
 	}
 
 
-	public FeatureCollection mkFC(ArrayList<LongLat> x)
+	public FeatureCollection mkFeatureCollection(ArrayList<LongLat> x)
 	{
 		ArrayList<Point> points = new ArrayList<>();
 		for (LongLat items : x)
 		{
+			System.out.println(items.latitude+ ", " + items.longitude);
 			Point p = Point.fromLngLat(items.longitude, items.latitude);
 			points.add(p);
 		}
@@ -80,6 +81,7 @@ public class GeoJsonRW
 		LongLat pos = new LongLat(p.longitude(), p.latitude());
 		return pos;
 	}
+
 
 }
 

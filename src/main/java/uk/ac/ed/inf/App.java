@@ -4,7 +4,7 @@ package uk.ac.ed.inf;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+
 public class App
 {
     public static void main(String[] args) throws SQLException
@@ -45,15 +45,26 @@ public class App
 		ArrayList<LongLat> testNoFly = new ArrayList<>();
 		for (ArrayList<LongLat> a: noFly.getNoFlyZonePoints())
 			testNoFly.addAll(a);
-		testNoFly = new ArrayList<>(new LinkedHashSet<>(testNoFly));
 
-		System.out.println(noFly.mkFC(testNoFly).toJson());
+
+		//System.out.println(noFly.mkFeatureCollection(testNoFly).toJson());
 
 		for(LongLat destination: hashedVertices.keySet())
 		{
 			LongLat start = new LongLat(-3.186874, 55.944494);
 			OrderWrapper burrito = new OrderWrapper(hashedVertices.get(destination), start, destination);
-			System.out.println(noFly.mkFC(burrito.getPath(zone.closeTo(), zone.getEdgeNoFly())).toJson());
+			System.out.println(noFly.mkFeatureCollection
+					(
+					burrito.getPath(zone.closeTo(), zone.getEdgeNoFly())).toJson()
+				);
+			ArrayList<LongLat> testJson = burrito.getPath(zone.closeTo(), zone.getEdgeNoFly());
+			System.out.println("--");
+			System.out.println(testJson.get(1).latitude + " " + testJson.get(1).longitude);
+			System.out.println(noFly.mkFeatureCollection(burrito.toDestination(start, testJson.get(1))).toJson());
+
+
+			System.out.println("-------");
+
 		}
 
     }

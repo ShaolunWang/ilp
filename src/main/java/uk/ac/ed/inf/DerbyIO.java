@@ -6,18 +6,11 @@ import java.util.ArrayList;
 
 public class DerbyIO
 {
-    private final String hostname;
-    private final String port;
 
-    private final String location;
-    private final String jbdcString;
     private final Connection conn;
     public DerbyIO(String hostname, String port, String location) throws SQLException
     {
-        this.hostname = hostname;
-        this.port = port;
-        this.location = location;
-        jbdcString = "jdbc:derby://" + hostname + ":" + port + "/" + location;
+        String jbdcString = "jdbc:derby://" + hostname + ":" + port + "/" + location;
         this.conn = DriverManager.getConnection(jbdcString);
     }
 
@@ -26,7 +19,6 @@ public class DerbyIO
         ArrayList<Order> orderList = new ArrayList<>();
 
         Date d = Date.valueOf(day);
-        ArrayList<String> foodOrders = new ArrayList<>();
         try
         {
             final String orderQuery =

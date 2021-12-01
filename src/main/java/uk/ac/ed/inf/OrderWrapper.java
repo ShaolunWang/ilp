@@ -11,7 +11,7 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 
-public class OrderWrapper 
+public class OrderWrapper
 {
     private final ArrayList<LongLat> currentOrder;
     private final LongLat destination;
@@ -91,8 +91,6 @@ public class OrderWrapper
             val_2 = astar.getPathWeight(start, currentOrder.get(1))
                     + astar.getPathWeight(currentOrder.get(1), currentOrder.get(0))
                     + astar.getPathWeight(currentOrder.get(0), destination);
-            System.out.println(val_1);
-            System.out.println(val_2);
             if (val_1 < val_2)
             {
 
@@ -118,7 +116,6 @@ public class OrderWrapper
 
         }
 
-        System.out.println("-----");
         return currentPath;
     }
     private Double getDistance(LongLat v1, LongLat v2, ArrayList<ArrayList<Line2D>> noFly)
@@ -137,6 +134,35 @@ public class OrderWrapper
         return (Math.abs(v1.longitude - v2.longitude)+ Math.abs(v1.latitude-v2.latitude));
     }
 
+    public ArrayList<LongLat> posToDestination(ArrayList<LongLat> destinations)
+    {
+        LongLat startPoint = new LongLat(-3.186874, 55.944494);
+        ArrayList<LongLat> toDes = new ArrayList<>();
+        int i;
+        for (LongLat nextDestination:destinations)
+        {
+            i = 0;
+
+            startPoint = nextDestination;
+        }
+        return toDes;
+    }
+    public ArrayList<LongLat> toDestination(LongLat startPoint, LongLat nextDestination)
+    {
+        ArrayList<LongLat> go = new ArrayList<>();
+        while (!startPoint.closeTo(nextDestination))
+        {
+            go.add(startPoint);
+            int angle = (int) Math.toDegrees(Math.atan2(
+                    nextDestination.latitude - startPoint.latitude,
+                    nextDestination.longitude- startPoint.longitude));
+
+            angle = (int) Math.round((angle+360)%360 / 10.0) * 10;
+            angle = (int) Math.toRadians(angle);
 
 
+            startPoint = startPoint.nextPosition(angle);
+        }
+        return go;
+    }
 }

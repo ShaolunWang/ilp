@@ -11,7 +11,7 @@ public class LongLat
 {
     public double longitude;
     public double latitude;
-    public double angle;
+    public int angle;
 	public static final double UNITMOVE = 0.00015;
 
     public LongLat(double longitude, double latitude)
@@ -76,7 +76,7 @@ public class LongLat
 	 */
 	public boolean closeTo(LongLat coord)
 	{
-		return (distanceTo(coord) <= UNITMOVE);
+		return (distanceTo(coord) < UNITMOVE);
 	}
 
 
@@ -88,12 +88,23 @@ public class LongLat
 	 */
 	public LongLat nextPosition(int angle)
 	{
-		this.angle = Math.toRadians(angle);
+		this.angle = angle;
+
 		double x_move = Math.cos(this.angle) * UNITMOVE;
 		double y_move = Math.sin(this.angle) * UNITMOVE;
 		if (angle == -999)
 			return new LongLat(longitude,latitude);
-		return new LongLat(longitude+x_move,latitude+y_move);
+
+		LongLat newLongLat = new LongLat(longitude + x_move,
+				latitude+ y_move);
+		newLongLat.angle = this.angle;
+		return newLongLat;
 	}
+	public void setAngle(int angle)
+	{
+		this.angle = angle;
+	}
+
+
 }
 
