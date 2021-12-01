@@ -15,22 +15,21 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DroneGraph
-{
-    private Graph<LongLat, DefaultEdge> deliverOrder;
+public class DroneGraph {
     private final HashMap<LongLat, ArrayList<LongLat>> hashedVertices;
+    private Graph<LongLat, DefaultEdge> deliverOrder;
+
     public DroneGraph(HashMap<LongLat, ArrayList<LongLat>> hashedVertices)
     {
         this.hashedVertices = hashedVertices;
     }
 
-    public void getPath(ArrayList<ArrayList<Line2D>> noFly)
-    {
+    public void getPath(ArrayList<ArrayList<Line2D>> noFly) {
         //AT
-        LongLat CurrentPos = new LongLat(3.186874,5.944494);
+        LongLat CurrentPos = new LongLat(3.186874, 5.944494);
 
 
-        for (LongLat deliveryPoints: hashedVertices.keySet())
+        for (LongLat deliveryPoints : hashedVertices.keySet())
         {
             deliverOrder = new DefaultDirectedWeightedGraph<>(DefaultEdge.class);
             deliverOrder.addVertex(CurrentPos);
@@ -54,13 +53,12 @@ public class DroneGraph
                 }
 
 
-
                 DefaultEdge temp3 = deliverOrder.addEdge(shop1, deliveryPoints);
                 deliverOrder.setEdgeWeight(temp3, getDistance(shop1, deliveryPoints, noFly));
             }
 
 
-            AStarAdmissibleHeuristic<LongLat> a = (v1, v2) -> getDistance(v1,v2,noFly);
+            AStarAdmissibleHeuristic<LongLat> a = (v1, v2) -> getDistance(v1, v2, noFly);
 
             AStarShortestPath astar = new AStarShortestPath(deliverOrder, a);
             System.out.println(astar.getPath(CurrentPos, deliveryPoints));
@@ -68,6 +66,7 @@ public class DroneGraph
         }
 
     }
+
     private Double getDistance(LongLat v1, LongLat v2, ArrayList<ArrayList<Line2D>> noFly)
     {
         Line2D e = new Line2D.Double(v1.longitude, v1.latitude, v2.longitude, v2.latitude);

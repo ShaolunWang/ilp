@@ -47,7 +47,7 @@ public class GeoJsonRW
 	}
 
 
-	public FeatureCollection mkFC(LongLat @NotNull ... x)
+	public FeatureCollection mkFC(ArrayList<LongLat> x)
 	{
 		ArrayList<Point> points = new ArrayList<>();
 		for (LongLat items : x)
@@ -60,17 +60,12 @@ public class GeoJsonRW
 		return FeatureCollection.fromFeature(f);
 	}
 
-	public String mkJson(@NotNull FeatureCollection fc)
+ 	public ArrayList<ArrayList<LongLat>> getNoFlyZonePoints()
 	{
-		return fc.toJson();
-	}
-	public ArrayList<ArrayList<LongLat>> getNoFlyZonePoints()
-	{
-		ArrayList<ArrayList<LongLat>> noFlyZonePoints = new ArrayList<ArrayList<LongLat>>();
+		ArrayList<ArrayList<LongLat>> noFlyZonePoints = new ArrayList<>();
 		for (Feature f: this.fc.features())
 		{
-			ArrayList<LongLat> singleNoFlyZone = new ArrayList<LongLat>();
-			System.out.println("a");
+			ArrayList<LongLat> singleNoFlyZone = new ArrayList<>();
 			for (Point p: TurfMeta.coordAll(f, false))
 			{
 				singleNoFlyZone.add(toLongLat(p));

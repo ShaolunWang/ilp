@@ -1,5 +1,8 @@
 package uk.ac.ed.inf;
 
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+
 /**
  * This is the class LongLat, representing drone's position
  * by using attribute longitude, latitude and angle.
@@ -9,7 +12,7 @@ public class LongLat
     public double longitude;
     public double latitude;
     public double angle;
-	private static final double move = 0.00015;
+	public static final double UNITMOVE = 0.00015;
 
     public LongLat(double longitude, double latitude)
     {
@@ -18,10 +21,6 @@ public class LongLat
         this.angle     = -1000;
     }
 
-	/**
-	 * Check whether the drone is in the range of the confined area
-	 * @return true if in the square confined by four shops, else false
-	 */
 	public boolean isConfined()
 	{
 		boolean x_confined = false;
@@ -46,6 +45,27 @@ public class LongLat
 
 		double x_diff = coord.longitude - longitude;
 		double y_diff = coord.latitude  - latitude;
+
+		return Math.sqrt(x_diff*x_diff+y_diff*y_diff);
+	}
+	public double noFlyDistanceTo(LongLat coord, ArrayList<ArrayList<Line2D>> noFly)
+	{
+		double x_diff = coord.longitude - longitude;
+		double y_diff = coord.latitude  - latitude;
+		Line2D e = new Line2D.Double(longitude, latitude, coord.longitude, coord.latitude);
+
+		for (ArrayList<Line2D> z : noFly)
+		{
+			for (Line2D l : z)
+			{
+				if (e.intersectsLine(l))
+				{
+					return 150000.0;
+				}
+
+			}
+
+		}
 		return Math.sqrt(x_diff*x_diff+y_diff*y_diff);
 	}
 
@@ -56,7 +76,7 @@ public class LongLat
 	 */
 	public boolean closeTo(LongLat coord)
 	{
-		return (distanceTo(coord) <= move);
+		return (distanceTo(coord) <= UNITMOVE);
 	}
 
 
@@ -69,8 +89,8 @@ public class LongLat
 	public LongLat nextPosition(int angle)
 	{
 		this.angle = Math.toRadians(angle);
-		double x_move = Math.cos(this.angle) * move;
-		double y_move = Math.sin(this.angle) * move;
+		double x_move = Math.cos(this.angle) * UNITMOVE;
+		double y_move = Math.sin(this.angle) * UNITMOVE;
 		if (angle == -999)
 			return new LongLat(longitude,latitude);
 		return new LongLat(longitude+x_move,latitude+y_move);

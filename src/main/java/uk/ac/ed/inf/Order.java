@@ -1,6 +1,4 @@
 package uk.ac.ed.inf;
-import java.sql.Array;
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class Order
@@ -24,7 +22,7 @@ public class Order
 	public LongLat getDeliverTo()
 	{
 		Location x = new Location(this.deliverTo, "localhost", "9898");
-		LongLat y = new LongLat(x.getDetails().coordinates.lat, x.getDetails().coordinates.lng);
+		LongLat y = new LongLat(x.getDetails().coordinates.lng, x.getDetails().coordinates.lat);
 		return y;
 	}
 }

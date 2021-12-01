@@ -5,35 +5,39 @@ import java.util.ArrayList;
 
 public class NoFlyZone
 {
-	private ArrayList<ArrayList<LongLat>> corners;
-	private ArrayList<ArrayList<Line2D>> edges;
+	private final ArrayList<ArrayList<LongLat>> corners;
+	private final ArrayList<ArrayList<Line2D>> edges;
 	public NoFlyZone(ArrayList<ArrayList<LongLat>> corners)
 	{
 		this.corners = corners;
 		this.edges = toLine2D();
 	}
 
-	public ArrayList<ArrayList<Line2D>> toLine2D()
+	public ArrayList<ArrayList<Line2D>>toLine2D()
 	{
 		ArrayList<ArrayList<Line2D>> edges = new ArrayList<>();
-		for (int j = 0; j < corners.size();j++)
+		for (ArrayList<LongLat> corner : corners)
 		{
 			ArrayList<Line2D> temp = new ArrayList<>();
-			for (int i = 0; i < corners.get(j).size();i++)
+			System.out.println(corner.size());
+
+			for (int i = 0; i < corner.size(); i++)
 			{
-				if (i == corners.get(j).size() - 1)
-					break;
-				else
-				{
-					Line2D e = new Line2D.Double(
-							corners.get(j).get(i).longitude,
-							corners.get(j).get(i).latitude,
-							corners.get(j).get(i+1).longitude,
-							corners.get(j).get(i).latitude);
-					temp.add(e);
-				}
+				if (i + 1 >= corner.size()) break;
+
+				Line2D e = new Line2D.Double
+						(
+							corner.get(i).longitude,
+							corner.get(i).latitude,
+							corner.get((i + 1)).longitude,
+							corner.get((i + 1)).latitude
+						);
+				temp.add(e);
+
 			}
+				System.out.println("-------");
 			edges.add(temp);
+
 		}
 		return edges;
 	}
@@ -42,6 +46,23 @@ public class NoFlyZone
 	{
 		return this.edges;
 	}
-
-
+	public ArrayList<LongLat> closeTo()
+	{
+		ArrayList<LongLat> close = new ArrayList<>();
+		for (ArrayList<LongLat> zone : corners)
+		{
+			for (LongLat c : zone)
+			{
+				LongLat close1 = new LongLat(c.longitude - LongLat.UNITMOVE, c.latitude - LongLat.UNITMOVE);
+				LongLat close2 = new LongLat(c.longitude - LongLat.UNITMOVE, c.latitude + LongLat.UNITMOVE);
+				LongLat close3 = new LongLat(c.longitude + LongLat.UNITMOVE, c.latitude - LongLat.UNITMOVE);
+				LongLat close4 = new LongLat(c.longitude + LongLat.UNITMOVE, c.latitude + LongLat.UNITMOVE);
+				close.add(close1);
+				close.add(close2);
+				close.add(close3);
+				close.add(close4);
+			}
+		}
+		return close;
+	}
 }
