@@ -13,6 +13,11 @@ public class NoFlyZone
 		this.edges = toLine2D();
 	}
 
+	/**
+	 * Convert all the corners of no fly zone into an
+	 * arrayList of line 2D boundaries.
+	 * @return an arraylist of line2D objects
+	 */
 	public ArrayList<ArrayList<Line2D>>toLine2D()
 	{
 		ArrayList<ArrayList<Line2D>> edges = new ArrayList<>();
@@ -42,10 +47,22 @@ public class NoFlyZone
 		return edges;
 	}
 
+	/**
+	 * getter function for all the no fly zone boundaries
+	 * @return an arrayList of Line2D objects
+	 */
 	public ArrayList<ArrayList<Line2D>> getEdgeNoFly()
 	{
 		return this.edges;
 	}
+
+	/**
+	 * generates an arraylist of coordinates that's
+	 * close to the corners of the no fly zone.
+	 * These would be used in A* shortest path search
+	 * as vertices.
+	 * @return an arraylist of LongLat corrdinates
+	 */
 	public ArrayList<LongLat> closeTo()
 	{
 		ArrayList<LongLat> close = new ArrayList<>();
@@ -53,10 +70,18 @@ public class NoFlyZone
 		{
 			for (LongLat c : zone)
 			{
-				LongLat close1 = new LongLat(c.longitude - LongLat.UNITMOVE, c.latitude - LongLat.UNITMOVE);
-				LongLat close2 = new LongLat(c.longitude - LongLat.UNITMOVE, c.latitude + LongLat.UNITMOVE);
-				LongLat close3 = new LongLat(c.longitude + LongLat.UNITMOVE, c.latitude - LongLat.UNITMOVE);
-				LongLat close4 = new LongLat(c.longitude + LongLat.UNITMOVE, c.latitude + LongLat.UNITMOVE);
+				LongLat close1 = new LongLat(
+						c.longitude - LongLat.UNITMOVE,
+						 c.latitude  - LongLat.UNITMOVE);
+				LongLat close2 = new LongLat(
+						c.longitude - LongLat.UNITMOVE,
+						 c.latitude  + LongLat.UNITMOVE);
+				LongLat close3 = new LongLat(
+						c.longitude + LongLat.UNITMOVE,
+						 c.latitude  - LongLat.UNITMOVE);
+				LongLat close4 = new LongLat(
+						c.longitude + LongLat.UNITMOVE,
+						 c.latitude  + LongLat.UNITMOVE);
 				close.add(close1);
 				close.add(close2);
 				close.add(close3);

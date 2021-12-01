@@ -2,34 +2,31 @@ package uk.ac.ed.inf;
 
 import com.mapbox.geojson.*;
 import com.mapbox.turf.TurfMeta;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class GeoJsonRW
+
+public class GeoJson
 {
 	private final String hostname;
 	private final String port;
 	private final String filename;
 	public FeatureCollection fc;
 
-	public GeoJsonRW(String hostname, String port, String filename)
+	public GeoJson(String hostname, String port, String filename)
 	{
 		this.hostname = hostname;
 		this.port     = port;
 		this.filename = filename;
 
 	}
-	/*
+	/**
 	 * f source is a GeoJSON string then
 	 * FeatureCollection.fromJson(source) returns a FeatureCollection.
 	 *     • If fc is a FeatureCollection then fc.features() is a list ofFeature objects.
 	 *	   • If f is a Feature then f.geometry() is a Geometry object.
      *	   • If g is a Geometry object, it may also be a Polygon.
 	 *     • If g is an instanceof Polygon then (Polygon)g is a Polygon.
-	 */
-
+	 **/
 	public void readGeoJson()
 	{ 
 		String loc = "/buildings/"+ this.filename;
@@ -46,13 +43,16 @@ public class GeoJsonRW
 		}
 	}
 
-
+	/**
+	 * Convert an arrayList of coordinates in LongLat to FeatureCollections
+	 * @param x A list of coordinates in LongLat form
+	 * @return an ArrayList of FeatureCollection.
+	 */
 	public FeatureCollection mkFeatureCollection(ArrayList<LongLat> x)
 	{
 		ArrayList<Point> points = new ArrayList<>();
 		for (LongLat items : x)
 		{
-			//System.out.println(items.latitude+ ", " + items.longitude);
 			Point p = Point.fromLngLat(items.longitude, items.latitude);
 			points.add(p);
 		}
@@ -61,6 +61,10 @@ public class GeoJsonRW
 		return FeatureCollection.fromFeature(f);
 	}
 
+	/**
+	 * get no fly zone's corners in the form of 2d arraylist
+	 * @return an arraylist of arraylist of no fly zones' corner
+	 **/
  	public ArrayList<ArrayList<LongLat>> getNoFlyZonePoints()
 	{
 		ArrayList<ArrayList<LongLat>> noFlyZonePoints = new ArrayList<>();
@@ -75,7 +79,13 @@ public class GeoJsonRW
 			noFlyZonePoints.add(singleNoFlyZone);
 		}
 		return noFlyZonePoints;
-	}	
+	}
+
+	/**
+	 * convert a Point to LongLat object
+	 * @param p a Point object
+	 * @return a LongLat object
+	 */
 	public LongLat toLongLat(Point p)
 	{
 		LongLat pos = new LongLat(p.longitude(), p.latitude());

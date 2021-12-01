@@ -19,7 +19,7 @@ public class App
 		for (Order o : menuTest)
 		{
 			ArrayList<LongLat> shopLocList = new ArrayList<>();
-			for (String food : o.getFood())
+			for (String food : o.toVararg())
 			{
 				for (String www : t.getFoodLoc(food))
 				{
@@ -38,7 +38,7 @@ public class App
 
 
 		//get noflyzone
-        GeoJsonRW noFly = new GeoJsonRW("localhost", "9898", "no-fly-zones.geojson");
+        GeoJson noFly = new GeoJson("localhost", "9898", "no-fly-zones.geojson");
         noFly.readGeoJson();
 		NoFlyZone zone = new NoFlyZone(noFly.getNoFlyZonePoints());
 
@@ -52,7 +52,7 @@ public class App
 		for(LongLat destination: hashedVertices.keySet())
 		{
 			LongLat start = new LongLat(-3.186874, 55.944494);
-			OrderWrapper burrito = new OrderWrapper(hashedVertices.get(destination), start, destination);
+			SingleOrder burrito = new SingleOrder(hashedVertices.get(destination), start, destination);
 			System.out.println(noFly.mkFeatureCollection
 					(
 					burrito.getPath(zone.closeTo(), zone.getEdgeNoFly())).toJson()

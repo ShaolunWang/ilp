@@ -14,6 +14,11 @@ public class DerbyIO
         this.conn = DriverManager.getConnection(jbdcString);
     }
 
+    /**
+     * return an arraylist of orders on a given day
+     * @param day
+     * @return an arrayList of orders
+     */
     public ArrayList<Order> readDerbyOrderNo(String day)
     {
         ArrayList<Order> orderList = new ArrayList<>();
@@ -43,6 +48,13 @@ public class DerbyIO
         }
         return orderList;
     }
+
+    /**
+     * Takes an orderNo and gives an arraylist of ordered food
+     * @param orderNo
+     * @return an arrayList of food
+     * @throws SQLException
+     */
     private ArrayList<String> getFood(String orderNo) throws SQLException
     {
         ArrayList<String> food  = new ArrayList<>();

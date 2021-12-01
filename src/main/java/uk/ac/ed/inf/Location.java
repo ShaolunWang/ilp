@@ -19,7 +19,8 @@ public class Location
 	}
 	
 	/**
-	 *  Connect to the server and return longlat obj
+	 *  Constructing the this.detail object in the class
+	 *  Connect to the server and returns a LongLat object
 	 *  @return LongLat obj 
  	 **/
 	public Details getLoc()
@@ -28,14 +29,23 @@ public class Location
 		Request getLocation = new Request(hostname, port, loc);
 		return toDetailLoc(getLocation);
 	}
-	
+
+	/**
+	 * Convert a JsonString to a Detail object
+	 * @param getLocation
+	 * @return a Detail object
+	 */
 	private Details toDetailLoc(@NotNull Request getLocation)
 	{
 		Gson gson = new Gson();
-		//Type listType = new TypeToken<List<Details>>(){}.getType();
 		return gson.fromJson(getLocation.requestAccessHttp(), Details.class);
 	}
 
+	/**
+	 *	Concatenate input into a valid location string
+	 * @param input location of the file being accessed
+	 * @return a string that represents the location
+	 */
 	private @NotNull String concatLoc(@NotNull String input)
 	{
 		// construct request
@@ -50,6 +60,11 @@ public class Location
 		result.append("/details.json");
 		return result.toString();
 	}
+
+	/**
+	 * getter function of Detail object
+	 * @return a Detail object
+	 */
 	public Details getDetails()
 	{
 		return this.detail;

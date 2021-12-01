@@ -43,7 +43,12 @@ public class Menus
 	}
 
 
-
+	/**
+	 * Creates an arrayList of HashMaps that
+	 * stores all the (food, price) pair in all the stores
+	 * @param shops
+	 * @return
+	 */
 	private @NotNull ArrayList<HashMap<String, Integer>> hashPence(@NotNull ArrayList<Shop> shops)
 	{
 		ArrayList<HashMap<String, Integer>> temp = new ArrayList<>();
@@ -61,6 +66,12 @@ public class Menus
 		return temp;
 	}
 
+	/**
+	 * Calculate costs from the Hashmap and the food order
+	 * @param hashShops a HashMap of all the (food, pence) pair in all the shops
+	 * @param foods a list of ordered food
+	 * @return price of the current order
+	 */
 	private Integer calculateCost(ArrayList<HashMap<String, Integer>> hashShops, String ...foods)
 	{
 		int temp = 0;
@@ -88,6 +99,11 @@ public class Menus
 		return temp;
 	}
 
+	/**
+	 * Convert menus into an arraylist
+	 * @param getMenus a request object that connects to the server
+	 * @return an arrayList of shops object
+	 */
 	private ArrayList<Shop> toListShops(@NotNull Request getMenus)
 	{
 		// might need to retrieve all the values using this method

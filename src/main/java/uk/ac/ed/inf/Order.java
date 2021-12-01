@@ -13,7 +13,13 @@ public class Order
 		this.foodDetail = foodDetail;
 	}
 
-	public String[] getFood()
+	/**
+	 * Convert the arrayList of foods into an array,
+	 * it will be the vararg of getFoodDelivery() function
+	 * in Menus class
+	 * @return an array of food being ordered
+	 */
+	public String[] toVararg()
 	{
 		return foodDetail.toArray(new String[foodDetail.size()]);
 	}
