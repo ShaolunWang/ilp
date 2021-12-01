@@ -8,7 +8,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
 
 import java.awt.geom.Line2D;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class OrderWrapper
@@ -74,7 +74,8 @@ public class OrderWrapper
         //DijkstraShortestPath<LongLat, DefaultEdge> astar = new DijkstraShortestPath<>(delivery);
         if (currentOrder.size() == 1)
         {
-            System.out.println(astar.getPathWeight(start, currentOrder.get(0))+ astar.getPathWeight(currentOrder.get(0), destination));
+            System.out.println(astar.getPathWeight(start, currentOrder.get(0))
+                    + astar.getPathWeight(currentOrder.get(0), destination));
             currentPath.addAll(astar.getPath(start, currentOrder.get(0))
                     .getVertexList());
             currentPath.addAll(astar.getPath(currentOrder.get(0), destination)
@@ -138,31 +139,48 @@ public class OrderWrapper
     {
         LongLat startPoint = new LongLat(-3.186874, 55.944494);
         ArrayList<LongLat> toDes = new ArrayList<>();
-        int i;
-        for (LongLat nextDestination:destinations)
-        {
-            i = 0;
+        Collections.reverse(destinations);
+        GeoJsonRW test = new GeoJsonRW("localhost", "9898", "no-fly-zones.geojson");
 
-            startPoint = nextDestination;
+        for (LongLat nextDestination: destinations)
+        {
+            toDes.add(startPoint);
+            while (!startPoint.closeTo(nextDestination))
+            {
+
+
+                int temp = (int) Math.toDegrees(Math.atan2(
+                        nextDestination.latitude - startPoint.latitude,
+                        nextDestination.longitude - startPoint.longitude));
+                double t = ((temp+360)%360)/10.0;
+                int angle = (int) (Math.round(t)*10);
+
+
+                startPoint = startPoint.nextPosition(angle);
+                toDes.add(startPoint);
+                //System.out.println(angle);
+
+                //System.out.println(test.mkFeatureCollection(toDes).toJson());
+            }
+            //System.out.println(nextDestination.latitude + " " + nextDestination.longitude);
         }
         return toDes;
     }
-    public ArrayList<LongLat> toDestination(LongLat startPoint, LongLat nextDestination)
+
+
+    public ArrayList<LongLat> format(ArrayList<LongLat> points)
     {
-        ArrayList<LongLat> go = new ArrayList<>();
-        while (!startPoint.closeTo(nextDestination))
-        {
-            go.add(startPoint);
-            int angle = (int) Math.toDegrees(Math.atan2(
-                    nextDestination.latitude - startPoint.latitude,
-                    nextDestination.longitude- startPoint.longitude));
 
-            angle = (int) Math.round((angle+360)%360 / 10.0) * 10;
-            angle = (int) Math.toRadians(angle);
+        ArrayList<LongLat> fpoints = (ArrayList<LongLat>) points.clone();
 
-
-            startPoint = startPoint.nextPosition(angle);
-        }
-        return go;
+        for (LongLat p : points)
+            fpoints.removeIf(i -> i.closeTo(p)
+                    && i.latitude != p.latitude
+                    && i.longitude != p.longitude);
+        return fpoints;
     }
+
+
+
+
 }

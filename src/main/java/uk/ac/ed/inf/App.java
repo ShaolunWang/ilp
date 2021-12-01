@@ -60,8 +60,10 @@ public class App
 			ArrayList<LongLat> testJson = burrito.getPath(zone.closeTo(), zone.getEdgeNoFly());
 			System.out.println("--");
 			System.out.println(testJson.get(1).latitude + " " + testJson.get(1).longitude);
-			System.out.println(noFly.mkFeatureCollection(burrito.toDestination(start, testJson.get(1))).toJson());
-
+			System.out.println(noFly.mkFeatureCollection
+					(
+							burrito.posToDestination(testJson)).toJson()
+			);
 
 			System.out.println("-------");
 

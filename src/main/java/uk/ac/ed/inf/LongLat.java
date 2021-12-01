@@ -89,9 +89,9 @@ public class LongLat
 	public LongLat nextPosition(int angle)
 	{
 		this.angle = angle;
-
-		double x_move = Math.cos(this.angle) * UNITMOVE;
-		double y_move = Math.sin(this.angle) * UNITMOVE;
+		double theta = Math.toRadians(angle);
+		double x_move = Math.cos(theta) * UNITMOVE;
+		double y_move = Math.sin(theta) * UNITMOVE;
 		if (angle == -999)
 			return new LongLat(longitude,latitude);
 
@@ -100,11 +100,5 @@ public class LongLat
 		newLongLat.angle = this.angle;
 		return newLongLat;
 	}
-	public void setAngle(int angle)
-	{
-		this.angle = angle;
-	}
-
-
 }
 

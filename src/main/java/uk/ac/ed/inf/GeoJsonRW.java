@@ -52,7 +52,7 @@ public class GeoJsonRW
 		ArrayList<Point> points = new ArrayList<>();
 		for (LongLat items : x)
 		{
-			System.out.println(items.latitude+ ", " + items.longitude);
+			//System.out.println(items.latitude+ ", " + items.longitude);
 			Point p = Point.fromLngLat(items.longitude, items.latitude);
 			points.add(p);
 		}

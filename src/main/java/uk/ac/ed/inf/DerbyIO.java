@@ -51,7 +51,6 @@ public class DerbyIO
         PreparedStatement psOrderDetailQuery =
                 conn.prepareStatement(orderDetailQuery);
 
-
         psOrderDetailQuery.setString(1, orderNo);
         ResultSet r = psOrderDetailQuery.executeQuery();
         while (r.next())
