@@ -52,13 +52,15 @@ public class App
 
 		//System.out.println(noFly.mkFeatureCollection(testNoFly).toJson());
 		LongLat start = new LongLat(-3.186874, 55.944494);
+		LongLat AT = new LongLat(-3.186874, 55.944494);
+
 		ArrayList<LongLat> beenTo = new ArrayList<>();
-		int move = 2000;
 
 		while (beenTo.size() != hashedVertices.size())
 		{
 			LongLat closestDestination = null;
 			double dis = 100000;
+
 			for (LongLat destination : hashedVertices.keySet())
 			{
 
@@ -70,16 +72,20 @@ public class App
 
 			ArrayList<LongLat> testJson = burrito.getPath(zone.closeTo(), zone.getEdgeNoFly());
 			ArrayList<LongLat> oneOrder = burrito.posToDestination(testJson, start);
-
-
 			start = oneOrder.get(oneOrder.size() - 1);
 			beenTo.add(closestDestination);
 			flightPath.addAll(oneOrder);
-			System.out.println(noFly.mkFeatureCollection(oneOrder).toJson());
-			System.out.println(noFly.mkFeatureCollection(testJson).toJson());
-			System.out.println("----");
+
+
+			if (beenTo.size() == hashedVertices.size()) {
+				System.out.println(noFly.mkFeatureCollection(flightPath).toJson());
+
+				oneOrder = burrito.toAT(zone.getEdgeNoFly(), start, AT, zone.closeTo());
+				flightPath.addAll(oneOrder);
+			}
 		}
 		System.out.println(noFly.mkFeatureCollection(flightPath).toJson());
+		System.out.println(flightPath.size());
 
 
 	}

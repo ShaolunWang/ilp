@@ -7,6 +7,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
 
 import java.awt.geom.Line2D;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -29,7 +30,7 @@ public class SingleOrder
         ArrayList<LongLat> currentPath = new ArrayList<>();
         Graph<LongLat, DefaultEdge> delivery =
                 new DefaultUndirectedWeightedGraph<>(DefaultEdge.class);
-        constructAStarGraph(close, noFly, delivery);
+        constructAStarGraph(close,this.currentOrder, noFly,  delivery, this.destination,this.start);
 
         AStarAdmissibleHeuristic<LongLat> a = (v1, v2) -> getDistance(v1, v2, noFly);
 
@@ -39,9 +40,10 @@ public class SingleOrder
         return currentPath;
     }
 
-    private void constructAStarGraph(ArrayList<LongLat> close,
+    private void constructAStarGraph(ArrayList<LongLat> close, ArrayList<LongLat> currentOrder,
                                      ArrayList<ArrayList<Line2D>> noFly,
-                                     Graph<LongLat, DefaultEdge> delivery)
+                                     Graph<LongLat, DefaultEdge> delivery,
+                                     LongLat destination,LongLat start)
     {
         delivery.addVertex(destination);
         delivery.addVertex(start);
@@ -70,10 +72,6 @@ public class SingleOrder
                 delivery.setEdgeWeight(b, currentOrder.get(0).noFlyDistanceTo(shops, noFly));
             }
         }
-
-
-
-
 
         for (LongLat p : close)
         {
@@ -216,6 +214,21 @@ public class SingleOrder
         return true;
 
     }
+    public ArrayList<LongLat> toAT(ArrayList<ArrayList<Line2D>> noFly,
+                                   LongLat start, LongLat end,
+                                    ArrayList<LongLat> close)
+    {
+        ArrayList<LongLat> placeHolder = new ArrayList<>();
+        Graph<LongLat, DefaultEdge> home =
+                new DefaultUndirectedWeightedGraph<>(DefaultEdge.class);
+        AStarAdmissibleHeuristic<LongLat> a = (v1, v2) -> getDistance(v1, v2, noFly);
+        AStarShortestPath<LongLat, DefaultEdge> astar = new AStarShortestPath<>(home, a);
+
+        constructAStarGraph(close, placeHolder, noFly, home, end, start);
+        return (ArrayList<LongLat>) astar.getPath(start, end).getVertexList();
+
+    }
+
 
 
 }
