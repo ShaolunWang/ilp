@@ -1,6 +1,8 @@
 package uk.ac.ed.inf;
 
 
+import com.google.gson.JsonArray;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,18 +52,32 @@ public class App
 
 		//System.out.println(noFly.mkFeatureCollection(testNoFly).toJson());
 		LongLat start = new LongLat(-3.186874, 55.944494);
+		ArrayList<LongLat> beenTo = new ArrayList<>();
+		int move = 2000;
 
-		for(LongLat destination: hashedVertices.keySet())
+		while (beenTo.size() != hashedVertices.size())
 		{
-			SingleOrder burrito = new SingleOrder(hashedVertices.get(destination), start, destination);
+			LongLat closestDestination = null;
+			double dis = 100000;
+			for (LongLat destination : hashedVertices.keySet())
+			{
+
+				if (destination.manhattan(start) < dis && !beenTo.contains(destination))
+					closestDestination = destination;
+
+			}
+			SingleOrder burrito = new SingleOrder(hashedVertices.get(closestDestination), start, closestDestination);
 
 			ArrayList<LongLat> testJson = burrito.getPath(zone.closeTo(), zone.getEdgeNoFly());
 			ArrayList<LongLat> oneOrder = burrito.posToDestination(testJson, start);
 
 
-			System.out.println("-------");
+			start = oneOrder.get(oneOrder.size() - 1);
+			beenTo.add(closestDestination);
 			flightPath.addAll(oneOrder);
-			start = oneOrder.get(oneOrder.size()-1);
+			System.out.println(noFly.mkFeatureCollection(oneOrder).toJson());
+			System.out.println(noFly.mkFeatureCollection(testJson).toJson());
+			System.out.println("----");
 		}
 		System.out.println(noFly.mkFeatureCollection(flightPath).toJson());
 

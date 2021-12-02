@@ -63,7 +63,8 @@ public class LongLat
 			}
 
 		}
-		return (Math.abs(longitude - coord.longitude)+ Math.abs(latitude-coord.latitude));
+		//return (Math.abs(longitude - coord.longitude)+ Math.abs(latitude-coord.latitude));
+		return distanceTo(coord);
 	}
 
 	/**
@@ -97,5 +98,10 @@ public class LongLat
 		newLongLat.angle = this.angle;
 		return newLongLat;
 	}
+	public double manhattan(LongLat coord)
+	{
+		return (Math.abs(longitude - coord.longitude)+ Math.abs(latitude-coord.latitude));
+	}
+
 }
 

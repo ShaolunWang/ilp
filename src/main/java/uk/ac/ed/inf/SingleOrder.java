@@ -50,25 +50,39 @@ public class SingleOrder
             DefaultEdge b = delivery.addEdge(start, destination);
             delivery.setEdgeWeight(b, start.noFlyDistanceTo(destination, noFly));
         }
-        for (LongLat x : currentOrder)
+        for (int i = 0; i < currentOrder.size();i++)
         {
-            delivery.addVertex(x);
-            if (noIntersect(x, destination, noFly))
+            LongLat shops = currentOrder.get(i);
+            delivery.addVertex(shops);
+            if (noIntersect(start, shops, noFly))
             {
-                DefaultEdge temp2 = delivery.addEdge(x, destination);
-                delivery.setEdgeWeight(temp2, destination.noFlyDistanceTo(x, noFly));
+                DefaultEdge b = delivery.addEdge(start, shops);
+                delivery.setEdgeWeight(b, start.noFlyDistanceTo(shops, noFly));
+            }
+            if (noIntersect(shops, destination, noFly))
+            {
+                DefaultEdge b = delivery.addEdge(shops, destination);
+                delivery.setEdgeWeight(b, shops.noFlyDistanceTo(destination, noFly));
+            }
+            if (i == 1)
+            {
+                DefaultEdge b = delivery.addEdge(shops, currentOrder.get(0));
+                delivery.setEdgeWeight(b, currentOrder.get(0).noFlyDistanceTo(shops, noFly));
             }
         }
+
+
+
+
 
         for (LongLat p : close)
         {
             delivery.addVertex(p);
-            for (LongLat q: close)
+
+            for (LongLat q : close)
             {
-                if (p.noFlyDistanceTo(q, noFly) != 0)
-                {
+                if (q.noFlyDistanceTo(p, noFly) !=0)
                     delivery.addVertex(q);
-                }
             }
             for (LongLat x : currentOrder)
             {
