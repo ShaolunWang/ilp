@@ -50,8 +50,6 @@ public class LongLat
 	}
 	public double noFlyDistanceTo(LongLat coord, ArrayList<ArrayList<Line2D>> noFly)
 	{
-		double x_diff = coord.longitude - longitude;
-		double y_diff = coord.latitude  - latitude;
 		Line2D e = new Line2D.Double(longitude, latitude, coord.longitude, coord.latitude);
 
 		for (ArrayList<Line2D> z : noFly)
@@ -62,11 +60,10 @@ public class LongLat
 				{
 					return 150000.0;
 				}
-
 			}
 
 		}
-		return Math.sqrt(x_diff*x_diff+y_diff*y_diff);
+		return (Math.abs(longitude - coord.longitude)+ Math.abs(latitude-coord.latitude));
 	}
 
 	/**

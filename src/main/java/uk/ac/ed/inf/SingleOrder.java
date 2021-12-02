@@ -45,13 +45,19 @@ public class SingleOrder
     {
         delivery.addVertex(destination);
         delivery.addVertex(start);
-        DefaultEdge b = delivery.addEdge(start, destination);
-        delivery.setEdgeWeight(b, start.noFlyDistanceTo(destination, noFly));
+        if (noIntersect(start, destination, noFly))
+        {
+            DefaultEdge b = delivery.addEdge(start, destination);
+            delivery.setEdgeWeight(b, start.noFlyDistanceTo(destination, noFly));
+        }
         for (LongLat x : currentOrder)
         {
             delivery.addVertex(x);
-            DefaultEdge temp2 = delivery.addEdge(x, destination);
-            delivery.setEdgeWeight(temp2, destination.noFlyDistanceTo(x, noFly));
+            if (noIntersect(x, destination, noFly))
+            {
+                DefaultEdge temp2 = delivery.addEdge(x, destination);
+                delivery.setEdgeWeight(temp2, destination.noFlyDistanceTo(x, noFly));
+            }
         }
 
         for (LongLat p : close)
@@ -66,15 +72,23 @@ public class SingleOrder
             }
             for (LongLat x : currentOrder)
             {
-                Line2D c = new Line2D.Double(p.longitude, p.latitude, x.longitude, x.latitude);
-                DefaultEdge temp = delivery.addEdge(p, x);
-                delivery.setEdgeWeight(temp, p.noFlyDistanceTo(x, noFly));
+                if (noIntersect(p, x, noFly))
+                {
+                    DefaultEdge temp = delivery.addEdge(p, x);
+                    delivery.setEdgeWeight(temp, p.noFlyDistanceTo(x, noFly));
+                }
 
             }
-            DefaultEdge toShop = delivery.addEdge(start, p);
-            delivery.setEdgeWeight(toShop, start.noFlyDistanceTo(p, noFly));
-            toShop = delivery.addEdge(p, destination);
-            delivery.setEdgeWeight(toShop, start.noFlyDistanceTo(p, noFly));
+            if (noIntersect(start, p, noFly))
+            {
+                DefaultEdge toShop = delivery.addEdge(start, p);
+                delivery.setEdgeWeight(toShop, start.noFlyDistanceTo(p, noFly));
+            }
+           if (noIntersect(p, destination, noFly))
+           {
+               DefaultEdge toShop = delivery.addEdge(p, destination);
+               delivery.setEdgeWeight(toShop, start.noFlyDistanceTo(p, noFly));
+           }
 
         }
     }
@@ -88,8 +102,7 @@ public class SingleOrder
     {
         if (currentOrder.size() == 1)
         {
-            System.out.println(astar.getPathWeight(start, currentOrder.get(0))
-                    + astar.getPathWeight(currentOrder.get(0), destination));
+
             currentPath.addAll(astar.getPath(start, currentOrder.get(0))
                     .getVertexList());
             currentPath.addAll(astar.getPath(currentOrder.get(0), destination)
@@ -148,13 +161,11 @@ public class SingleOrder
         return (Math.abs(v1.longitude - v2.longitude)+ Math.abs(v1.latitude-v2.latitude));
     }
 
-    public ArrayList<LongLat> posToDestination(ArrayList<LongLat> destinations)
+    public ArrayList<LongLat> posToDestination(ArrayList<LongLat> destinations, LongLat start)
     {
-        LongLat startPoint = new LongLat(-3.186874, 55.944494);
+        LongLat startPoint = start;
         ArrayList<LongLat> toDes = new ArrayList<>();
         Collections.reverse(destinations);
-        GeoJson test = new GeoJson("localhost", "9898", "no-fly-zones.geojson");
-
         for (LongLat nextDestination: destinations)
         {
             toDes.add(startPoint);
@@ -175,11 +186,22 @@ public class SingleOrder
         return toDes;
     }
     
-    /*
-    private boolean isIntersect(Line2D x, ArrayList<Line2D> noFly)
+
+    private boolean noIntersect(LongLat p, LongLat x, ArrayList<ArrayList<Line2D>> noFly)
     {
+        Line2D e = new Line2D.Double(p.longitude, p.latitude, x.longitude, x.latitude);
+        for (ArrayList<Line2D> f: noFly)
+        {
+            for (Line2D l : f)
+            {
+                if (l.intersectsLine(e))
+                    return false;
+            }
+
+        }
+        return true;
 
     }
-    */
+
 
 }

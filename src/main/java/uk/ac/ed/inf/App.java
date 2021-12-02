@@ -11,7 +11,7 @@ public class App
 	{
 	    //get order
         DerbyIO test = new DerbyIO("localhost", "1527", "derbyDB");
-        ArrayList<Order> menuTest = test.readDerbyOrderNo("2022-02-02");
+        ArrayList<Order> menuTest = test.readDerbyOrderNo("2023-12-27");
 		Menus t = new Menus("localhost", "9898");
 
 		HashMap<LongLat, ArrayList<LongLat>> hashedVertices = new HashMap<>();
@@ -46,28 +46,25 @@ public class App
 		for (ArrayList<LongLat> a: noFly.getNoFlyZonePoints())
 			testNoFly.addAll(a);
 
+		ArrayList<LongLat> flightPath = new ArrayList<>();
 
 		//System.out.println(noFly.mkFeatureCollection(testNoFly).toJson());
+		LongLat start = new LongLat(-3.186874, 55.944494);
 
 		for(LongLat destination: hashedVertices.keySet())
 		{
-			LongLat start = new LongLat(-3.186874, 55.944494);
 			SingleOrder burrito = new SingleOrder(hashedVertices.get(destination), start, destination);
-			System.out.println(noFly.mkFeatureCollection
-					(
-					burrito.getPath(zone.closeTo(), zone.getEdgeNoFly())).toJson()
-				);
+
 			ArrayList<LongLat> testJson = burrito.getPath(zone.closeTo(), zone.getEdgeNoFly());
-			System.out.println("--");
-			System.out.println(testJson.get(1).latitude + " " + testJson.get(1).longitude);
-			System.out.println(noFly.mkFeatureCollection
-					(
-							burrito.posToDestination(testJson)).toJson()
-			);
+			ArrayList<LongLat> oneOrder = burrito.posToDestination(testJson, start);
+
 
 			System.out.println("-------");
-
+			flightPath.addAll(oneOrder);
+			start = oneOrder.get(oneOrder.size()-1);
 		}
+		System.out.println(noFly.mkFeatureCollection(flightPath).toJson());
 
-    }
+
+	}
 }

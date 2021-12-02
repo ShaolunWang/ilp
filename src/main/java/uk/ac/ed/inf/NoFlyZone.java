@@ -71,17 +71,33 @@ public class NoFlyZone
 			for (LongLat c : zone)
 			{
 				LongLat close1 = new LongLat(
-						c.longitude - LongLat.UNITMOVE,
-						 c.latitude  - LongLat.UNITMOVE);
+						c.longitude - 2*LongLat.UNITMOVE,
+						 c.latitude  - 2*LongLat.UNITMOVE);
 				LongLat close2 = new LongLat(
-						c.longitude - LongLat.UNITMOVE,
-						 c.latitude  + LongLat.UNITMOVE);
+						c.longitude - 2*LongLat.UNITMOVE,
+						 c.latitude  + 2*LongLat.UNITMOVE);
 				LongLat close3 = new LongLat(
-						c.longitude + LongLat.UNITMOVE,
-						 c.latitude  - LongLat.UNITMOVE);
+						c.longitude + 2*LongLat.UNITMOVE,
+						 c.latitude  - 2*LongLat.UNITMOVE);
 				LongLat close4 = new LongLat(
-						c.longitude + LongLat.UNITMOVE,
-						 c.latitude  + LongLat.UNITMOVE);
+						c.longitude + 2*LongLat.UNITMOVE,
+						 c.latitude  + 2*LongLat.UNITMOVE);
+
+				LongLat close5 = new LongLat(
+						c.longitude + 2*LongLat.UNITMOVE,
+						c.latitude);
+
+				LongLat close7 = new LongLat(
+						c.longitude - 2*LongLat.UNITMOVE,
+						c.latitude);
+
+				LongLat close6 = new LongLat(
+						c.longitude,
+						c.latitude  - 2*LongLat.UNITMOVE);
+
+				LongLat close8 = new LongLat(
+						c.longitude,
+						c.latitude  + 2*LongLat.UNITMOVE);
 				close.add(close1);
 				close.add(close2);
 				close.add(close3);
