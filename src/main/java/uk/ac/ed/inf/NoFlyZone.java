@@ -71,37 +71,42 @@ public class NoFlyZone
 			for (LongLat c : zone)
 			{
 				LongLat close1 = new LongLat(
-						c.longitude - 2*LongLat.UNITMOVE,
-						 c.latitude  - 2*LongLat.UNITMOVE);
+						c.longitude - 2.75*LongLat.UNITMOVE*Math.cos(Math.PI/6),
+						 c.latitude  - 2.75*LongLat.UNITMOVE*Math.sin(Math.PI/6));
 				LongLat close2 = new LongLat(
-						c.longitude - 2*LongLat.UNITMOVE,
-						 c.latitude  + 2*LongLat.UNITMOVE);
+						c.longitude - 2.75*LongLat.UNITMOVE*Math.cos(Math.PI/6),
+						 c.latitude  + 2.75*LongLat.UNITMOVE*Math.sin(Math.PI/6));
 				LongLat close3 = new LongLat(
-						c.longitude + 2*LongLat.UNITMOVE,
-						 c.latitude  - 2*LongLat.UNITMOVE);
+						c.longitude + 2.75*LongLat.UNITMOVE*Math.cos(Math.PI/6),
+						 c.latitude  - 2.75*LongLat.UNITMOVE*Math.sin(Math.PI/6));
 				LongLat close4 = new LongLat(
-						c.longitude + 2*LongLat.UNITMOVE,
-						 c.latitude  + 2*LongLat.UNITMOVE);
+						c.longitude + 2.75*LongLat.UNITMOVE*Math.cos(Math.PI/6),
+						 c.latitude  + 2.75*LongLat.UNITMOVE*Math.sin(Math.PI/6));
 
-				LongLat close5 = new LongLat(
-						c.longitude + 2*LongLat.UNITMOVE,
-						c.latitude);
-
-				LongLat close7 = new LongLat(
-						c.longitude - 2*LongLat.UNITMOVE,
-						c.latitude);
-
-				LongLat close6 = new LongLat(
-						c.longitude,
-						c.latitude  - 2*LongLat.UNITMOVE);
-
-				LongLat close8 = new LongLat(
-						c.longitude,
-						c.latitude  + 2*LongLat.UNITMOVE);
+//				LongLat close5 = new LongLat(
+//						c.longitude + 2*LongLat.UNITMOVE,
+//						c.latitude);
+//
+//				LongLat close7 = new LongLat(
+//						c.longitude - 2*LongLat.UNITMOVE,
+//						c.latitude);
+//
+//				LongLat close6 = new LongLat(
+//						c.longitude,
+//						c.latitude  - 2*LongLat.UNITMOVE);
+//
+//				LongLat close8 = new LongLat(
+//						c.longitude,
+//						c.latitude  + 2*LongLat.UNITMOVE);
 				close.add(close1);
 				close.add(close2);
 				close.add(close3);
 				close.add(close4);
+
+//				close.add(close5);
+//				close.add(close6);
+//				close.add(close7);
+//				close.add(close8);
 			}
 		}
 		return close;

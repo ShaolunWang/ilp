@@ -1,13 +1,11 @@
 package uk.ac.ed.inf;
 
 import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.AStarAdmissibleHeuristic;
 import org.jgrapht.alg.shortestpath.AStarShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
 
 import java.awt.geom.Line2D;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -32,13 +30,13 @@ public class SingleOrder
                 new DefaultUndirectedWeightedGraph<>(DefaultEdge.class);
         constructAStarGraph(close,this.currentOrder, noFly,  delivery, this.destination,this.start);
 
-        AStarAdmissibleHeuristic<LongLat> a = (v1, v2) -> getDistance(v1, v2, noFly);
-
+        Heuristic<LongLat> a = new Heuristic<>(noFly);
         AStarShortestPath<LongLat, DefaultEdge> astar = new AStarShortestPath<>(delivery, a);
         compareCurrentPaths(currentPath, astar);
 
         return currentPath;
     }
+
 
     private void constructAStarGraph(ArrayList<LongLat> close, ArrayList<LongLat> currentOrder,
                                      ArrayList<ArrayList<Line2D>> noFly,
@@ -68,20 +66,25 @@ public class SingleOrder
             }
             if (i == 1)
             {
-                DefaultEdge b = delivery.addEdge(shops, currentOrder.get(0));
-                delivery.setEdgeWeight(b, currentOrder.get(0).noFlyDistanceTo(shops, noFly));
+                if (noIntersect(shops, destination, noFly))
+                {
+                    DefaultEdge b = delivery.addEdge(shops, currentOrder.get(0));
+                    delivery.setEdgeWeight(b, currentOrder.get(0).noFlyDistanceTo(shops, noFly));
+                }
             }
         }
 
         for (LongLat p : close)
         {
             delivery.addVertex(p);
-
-            for (LongLat q : close)
+            for (LongLat q: close)
             {
-                if (q.noFlyDistanceTo(p, noFly) !=0)
-                    delivery.addVertex(q);
+                if (!delivery.containsVertex(q) && delivery.containsEdge(p, q))
+                {
+                    delivery.setEdgeWeight(p, q, p.noFlyDistanceTo(q, noFly));
+                }
             }
+
             for (LongLat x : currentOrder)
             {
                 if (noIntersect(p, x, noFly))
@@ -103,6 +106,8 @@ public class SingleOrder
            }
 
         }
+
+
     }
 
     /**
@@ -110,7 +115,8 @@ public class SingleOrder
      * @param currentPath
      * @param astar
      */
-    private void compareCurrentPaths(ArrayList<LongLat> currentPath, AStarShortestPath<LongLat, DefaultEdge> astar)
+    private void compareCurrentPaths(ArrayList<LongLat> currentPath,
+                                     AStarShortestPath<LongLat, DefaultEdge> astar)
     {
         if (currentOrder.size() == 1)
         {
@@ -131,7 +137,7 @@ public class SingleOrder
             val_2 = astar.getPathWeight(start, currentOrder.get(1))
                     + astar.getPathWeight(currentOrder.get(1), currentOrder.get(0))
                     + astar.getPathWeight(currentOrder.get(0), destination);
-            if (val_1 < val_2)
+            if (val_1 <= val_2)
             {
 
                 currentPath.addAll(astar.getPath(start, currentOrder.get(0))
@@ -155,22 +161,6 @@ public class SingleOrder
 
 
         }
-    }
-
-    private Double getDistance(LongLat v1, LongLat v2, ArrayList<ArrayList<Line2D>> noFly)
-    {
-        Line2D e = new Line2D.Double(v1.longitude, v1.latitude, v2.longitude, v2.latitude);
-        for (ArrayList<Line2D> z : noFly)
-        {
-            for (Line2D l : z)
-            {
-                if (e.intersectsLine(l))
-                {
-                    return 150000.0;
-                }
-            }
-        }
-        return (Math.abs(v1.longitude - v2.longitude)+ Math.abs(v1.latitude-v2.latitude));
     }
 
     public ArrayList<LongLat> posToDestination(ArrayList<LongLat> destinations, LongLat start)
@@ -221,12 +211,11 @@ public class SingleOrder
         ArrayList<LongLat> placeHolder = new ArrayList<>();
         Graph<LongLat, DefaultEdge> home =
                 new DefaultUndirectedWeightedGraph<>(DefaultEdge.class);
-        AStarAdmissibleHeuristic<LongLat> a = (v1, v2) -> getDistance(v1, v2, noFly);
-        AStarShortestPath<LongLat, DefaultEdge> astar = new AStarShortestPath<>(home, a);
+        Heuristic<LongLat> h = new Heuristic<>(noFly);
+        AStarShortestPath<LongLat, DefaultEdge> astar = new AStarShortestPath<>(home, h);
 
         constructAStarGraph(close, placeHolder, noFly, home, end, start);
         return (ArrayList<LongLat>) astar.getPath(start, end).getVertexList();
-
     }
 
 
