@@ -40,6 +40,7 @@ public class App
 
 
 		//get noflyzone
+		int sdf = 0;
         GeoJson noFly = new GeoJson("localhost", "9898", "no-fly-zones.geojson");
         noFly.readGeoJson();
 		NoFlyZone zone = new NoFlyZone(noFly.getNoFlyZonePoints());
@@ -55,7 +56,6 @@ public class App
 		LongLat AT = new LongLat(-3.186874, 55.944494);
 
 		ArrayList<LongLat> beenTo = new ArrayList<>();
-
 		while (beenTo.size() != hashedVertices.size())
 		{
 			LongLat closestDestination = null;
@@ -74,18 +74,32 @@ public class App
 			ArrayList<LongLat> oneOrder = burrito.posToDestination(testJson, start);
 			start = oneOrder.get(oneOrder.size() - 1);
 			beenTo.add(closestDestination);
-			flightPath.addAll(oneOrder);
 
 
-			if (beenTo.size() == hashedVertices.size()) {
-				System.out.println(noFly.mkFeatureCollection(flightPath).toJson());
-
+			if (beenTo.size() == hashedVertices.size() || flightPath.size() + oneOrder.size()> 1500)
+			{
+				int money = 0;
+				for (Order o : menuTest)
+				{
+					if (o.getDeliverTo().longitude != closestDestination.longitude
+					&& o.getDeliverTo().latitude != closestDestination.latitude)
+						money += t.getDeliveryCost(o.toVararg());
+				}
+				sdf = money;
+				System.out.println(money);
 				oneOrder = burrito.toAT(zone.getEdgeNoFly(), start, AT, zone.closeTo());
-				flightPath.addAll(oneOrder);
 			}
+			flightPath.addAll(oneOrder);
 		}
+		int tot = 0;
+		for (int k = 0; k < menuTest.size();k++)
+		{
+			tot += t.getDeliveryCost(menuTest.get(k).toVararg());
+		}
+		System.out.println(tot);
 		System.out.println(noFly.mkFeatureCollection(flightPath).toJson());
 		System.out.println(flightPath.size());
+		System.out.println((double) sdf/ (double) tot);
 
 
 	}
