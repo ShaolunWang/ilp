@@ -1,5 +1,9 @@
 package uk.ac.ed.inf;
 
+/**
+ *  this class is design to read json
+ *  by using TypeTokn
+ */
 public class Details
 {
 	String country;

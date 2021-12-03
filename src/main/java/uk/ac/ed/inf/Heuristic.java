@@ -5,6 +5,10 @@ import org.jgrapht.alg.interfaces.AStarAdmissibleHeuristic;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
+/**
+ * This module implements the a* heuristic by using manhattan distance
+ * @param <V> Vertices type
+ */
 class Heuristic<V> implements AStarAdmissibleHeuristic<V>
 {
     private final ArrayList<ArrayList<Line2D>> noFly;
@@ -13,6 +17,15 @@ class Heuristic<V> implements AStarAdmissibleHeuristic<V>
         this.noFly = noFly;
     }
 
+    /**
+     * Implementation of getCostEstimate function
+     * By using manhattan distance
+     * if the path crosses the no fly zone, it will return a high value
+     * otherwise just manhattan distance
+     * @param v1 LongLat v1
+     * @param v2 LongLat v2
+     * @return distance
+     */
     @Override
     public double getCostEstimate(Object v1, Object v2)
     {

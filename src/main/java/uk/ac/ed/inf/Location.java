@@ -4,6 +4,9 @@ package uk.ac.ed.inf;
 import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A class that can get what 3 words locations
+ */
 public class Location
 {
 	private final String loc;
@@ -32,7 +35,7 @@ public class Location
 
 	/**
 	 * Convert a JsonString to a Detail object
-	 * @param getLocation
+	 * @param getLocation a Request object that handles the request of getting location from the server
 	 * @return a Detail object
 	 */
 	private Details toDetailLoc(@NotNull Request getLocation)

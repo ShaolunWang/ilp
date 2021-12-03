@@ -1,16 +1,18 @@
 package uk.ac.ed.inf;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 
+/**
+ * a class that handles setting up orders
+ * and order related utility functions
+ */
 public class Order
 {
-	private final String customer;
 	private final String deliverTo;
 	private final ArrayList<String> foodDetail;
 	public Order(String order,String customer, String deliverTo, ArrayList<String> foodDetail)
 	{
-		this.customer = customer;
 		this.deliverTo = deliverTo;
 		this.foodDetail = foodDetail;
 	}
@@ -23,7 +25,7 @@ public class Order
 	 */
 	public String[] toVararg()
 	{
-		return foodDetail.toArray(new String[foodDetail.size()]);
+		return foodDetail.toArray(new String[0]);
 	}
 	public LongLat getDeliverTo()
 	{
@@ -31,32 +33,22 @@ public class Order
 		return new LongLat(x.getDetails().coordinates.lng, x.getDetails().coordinates.lat);
 	}
 
-	public static final Comparator<Order> Order_COMPARATOR = new OrderComparator();
-
-	static class OrderComparator implements Comparator<Order>
+	/**
+	 * Making a hashmap of delivery location and all shops
+	 * @param orders all orders
+	 * @param allMenus menus from all the shops
+	 * @return a hashmap of (LongLat, ArrayList<LongLat>>) objects
+	 */
+	public static HashMap<LongLat, ArrayList<LongLat>>  hashOrder(ArrayList<Order> orders, Menus allMenus)
 	{
-		@Override
-		public int compare(Order a, Order b)
-		{
-			Menus t = new Menus("localhost", "9898");
-
-			return t.getDeliveryCost(a.toVararg()) < t.getDeliveryCost(b.toVararg())  ?
-					-1 : t.getDeliveryCost(a.toVararg())  == t.getDeliveryCost(b.toVararg()) ? 0 : 1;
-		}
-	}
-
-	public static HashMap<LongLat, ArrayList<LongLat>>  hashOrder(ArrayList<Order> menuTest)
-	{
-		Menus t = new Menus("localhost", "9898");
-
 		HashMap<LongLat, ArrayList<LongLat>> hashedVertices = new HashMap<>();
 		//get deliverTo
-		for (Order o : menuTest)
+		for (Order o : orders)
 		{
 			ArrayList<LongLat> shopLocList = new ArrayList<>();
 			for (String food : o.toVararg())
 			{
-				for (String www : t.getFoodLoc(food))
+				for (String www : allMenus.getFoodLoc(food))
 				{
 					Location x = new Location(www, "localhost", "9898");
 					LongLat shop = new LongLat(x.getDetails().coordinates.lng, x.getDetails().coordinates.lat);

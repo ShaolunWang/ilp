@@ -16,7 +16,7 @@ public class DerbyIO
 
     /**
      * return an arraylist of orders on a given day
-     * @param day
+     * @param day String representing the day of order being calculated
      * @return an arrayList of orders
      */
     public ArrayList<Order> readDerbyOrderNo(String day)
@@ -51,9 +51,9 @@ public class DerbyIO
 
     /**
      * Takes an orderNo and gives an arraylist of ordered food
-     * @param orderNo
+     * @param orderNo A string representing which order is being fetched from database
      * @return an arrayList of food
-     * @throws SQLException
+     * @throws SQLException throws SQLException if having issues accessing the database
      */
     private ArrayList<String> getFood(String orderNo) throws SQLException
     {
@@ -73,4 +73,9 @@ public class DerbyIO
         }
         return food;
     }
+//    public void writeDB()
+//    {
+//        "create table flightpath(orderNo char(8),fromLongitude double,fromLatitude double,angle integer,toLongitude double,toLatitude double)"
+//    }
+
 }

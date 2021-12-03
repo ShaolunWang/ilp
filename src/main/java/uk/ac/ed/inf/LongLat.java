@@ -2,7 +2,6 @@ package uk.ac.ed.inf;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * This is the class LongLat, representing drone's position
@@ -14,6 +13,7 @@ public class LongLat
     public double latitude;
     public int angle;
 	public static final double UNITMOVE = 0.00015;
+	public static final LongLat AT = new LongLat(-3.186874, 55.944494);
 
     public LongLat(double longitude, double latitude)
     {

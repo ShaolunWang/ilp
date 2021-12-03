@@ -3,6 +3,10 @@ package uk.ac.ed.inf;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
+/**
+ * A class that handles setting up no-fly zones
+ * and no-fly zone related utility functions
+ */
 public class NoFlyZone
 {
 	private final ArrayList<ArrayList<LongLat>> corners;
@@ -61,7 +65,7 @@ public class NoFlyZone
 	 * close to the corners of the no fly zone.
 	 * These would be used in A* shortest path search
 	 * as vertices.
-	 * @return an arraylist of LongLat corrdinates
+	 * @return an arraylist of LongLat coordinates
 	 */
 	public ArrayList<LongLat> closeTo()
 	{
@@ -83,30 +87,10 @@ public class NoFlyZone
 						c.longitude + 2.75*LongLat.UNITMOVE*Math.cos(Math.PI/6),
 						 c.latitude  + 2.75*LongLat.UNITMOVE*Math.sin(Math.PI/6));
 
-//				LongLat close5 = new LongLat(
-//						c.longitude + 2*LongLat.UNITMOVE,
-//						c.latitude);
-//
-//				LongLat close7 = new LongLat(
-//						c.longitude - 2*LongLat.UNITMOVE,
-//						c.latitude);
-//
-//				LongLat close6 = new LongLat(
-//						c.longitude,
-//						c.latitude  - 2*LongLat.UNITMOVE);
-//
-//				LongLat close8 = new LongLat(
-//						c.longitude,
-//						c.latitude  + 2*LongLat.UNITMOVE);
 				close.add(close1);
 				close.add(close2);
 				close.add(close3);
 				close.add(close4);
-
-//				close.add(close5);
-//				close.add(close6);
-//				close.add(close7);
-//				close.add(close8);
 			}
 		}
 		return close;
