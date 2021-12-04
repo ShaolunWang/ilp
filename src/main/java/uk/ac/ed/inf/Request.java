@@ -48,7 +48,6 @@ public class Request
 		{
 			System.out.println("Exception caught: " + e);
 		}
-
 		return null;
 	}
 

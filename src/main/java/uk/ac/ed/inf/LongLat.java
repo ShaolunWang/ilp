@@ -1,5 +1,7 @@
 package uk.ac.ed.inf;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
@@ -41,7 +43,7 @@ public class LongLat
 	 * @param coord the position of the other point.
 	 * @return distance between two points
 	 */
-	public double distanceTo(LongLat coord)
+	public double distanceTo(@NotNull LongLat coord)
 	{
 
 		double x_diff = coord.longitude - longitude;
@@ -49,7 +51,7 @@ public class LongLat
 
 		return Math.sqrt(x_diff*x_diff+y_diff*y_diff);
 	}
-	public double noFlyDistanceTo(LongLat coord, ArrayList<ArrayList<Line2D>> noFly)
+	public double noFlyDistanceTo(@NotNull LongLat coord, @NotNull ArrayList<ArrayList<Line2D>> noFly)
 	{
 		Line2D e = new Line2D.Double(longitude, latitude, coord.longitude, coord.latitude);
 
@@ -59,13 +61,13 @@ public class LongLat
 			{
 				if (e.intersectsLine(l))
 				{
-					return 150000.0;
+					return 15000.0;
 				}
 			}
 
 		}
-		return (Math.abs(longitude - coord.longitude)+ Math.abs(latitude-coord.latitude));
-		//return distanceTo(coord);
+		//return (Math.abs(longitude - coord.longitude)+ Math.abs(latitude-coord.latitude));
+		return distanceTo(coord);
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class LongLat
 		newLongLat.angle = this.angle;
 		return newLongLat;
 	}
-	public double manhattan(LongLat coord)
+	public double manhattan(@NotNull LongLat coord)
 	{
 		return (Math.abs(longitude - coord.longitude)+ Math.abs(latitude-coord.latitude));
 	}

@@ -18,7 +18,7 @@ public class NoFlyZone
 	}
 
 	/**
-	 * Convert all the corners of no fly zone into an
+	 * Convert all the corners of no-fly zone into an
 	 * arrayList of line 2D boundaries.
 	 * @return an arraylist of line2D objects
 	 */
@@ -28,7 +28,6 @@ public class NoFlyZone
 		for (ArrayList<LongLat> corner : corners)
 		{
 			ArrayList<Line2D> temp = new ArrayList<>();
-			System.out.println(corner.size());
 
 			for (int i = 0; i < corner.size(); i++)
 			{
@@ -44,7 +43,6 @@ public class NoFlyZone
 				temp.add(e);
 
 			}
-				System.out.println("-------");
 			edges.add(temp);
 
 		}
@@ -52,7 +50,7 @@ public class NoFlyZone
 	}
 
 	/**
-	 * getter function for all the no fly zone boundaries
+	 * getter function for all the no-fly zone boundaries
 	 * @return an arrayList of Line2D objects
 	 */
 	public ArrayList<ArrayList<Line2D>> getEdgeNoFly()
@@ -62,8 +60,8 @@ public class NoFlyZone
 
 	/**
 	 * generates an arraylist of coordinates that's
-	 * close to the corners of the no fly zone.
-	 * These would be used in A* shortest path search
+	 * close to the corners of the no-fly zone.
+	 * These would be used in A* the shortest path search
 	 * as vertices.
 	 * @return an arraylist of LongLat coordinates
 	 */

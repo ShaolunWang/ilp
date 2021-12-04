@@ -39,10 +39,10 @@ class Heuristic<V> implements AStarAdmissibleHeuristic<V>
                 for (Line2D l : z)
                 {
                     if (e.intersectsLine(l))
-                        return 1500000.0;
+                        return 15000.0;
                 }
             }
-            return (Math.abs(p1.longitude - p2.longitude) + Math.abs(p1.latitude - p2.latitude));
+            return ((LongLat) v1).manhattan((LongLat) v2);
         }
         return 0;
     }

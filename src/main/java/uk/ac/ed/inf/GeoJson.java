@@ -1,12 +1,14 @@
 package uk.ac.ed.inf;
 
-import com.mapbox.geojson.*;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
 import com.mapbox.turf.TurfMeta;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 
@@ -127,7 +129,7 @@ public class GeoJson
 		}
 		catch (Exception e)
 		{
-			System.err.println("error: " + e.toString());
+			System.err.println("error: " + e);
 		}
 	}
 

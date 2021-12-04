@@ -1,5 +1,7 @@
 package uk.ac.ed.inf;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,9 +12,11 @@ import java.util.HashMap;
 public class Order
 {
 	private final String deliverTo;
+	private final String orderNo;
 	private final ArrayList<String> foodDetail;
-	public Order(String order,String customer, String deliverTo, ArrayList<String> foodDetail)
+	public Order(String orderNo, String deliverTo, ArrayList<String> foodDetail)
 	{
+		this.orderNo = orderNo;
 		this.deliverTo = deliverTo;
 		this.foodDetail = foodDetail;
 	}
@@ -27,6 +31,11 @@ public class Order
 	{
 		return foodDetail.toArray(new String[0]);
 	}
+
+	/**
+	 * getter function that gives where the order will be delivered to
+	 * @return LongLat location of deliver point
+	 */
 	public LongLat getDeliverTo()
 	{
 		Location x = new Location(this.deliverTo, "localhost", "9898");
@@ -37,7 +46,7 @@ public class Order
 	 * Making a hashmap of delivery location and all shops
 	 * @param orders all orders
 	 * @param allMenus menus from all the shops
-	 * @return a hashmap of (LongLat, ArrayList<LongLat>>) objects
+	 * @return a hashmap of (LongLat order, ArrayList<LongLat>> shops) objects
 	 */
 	public static HashMap<LongLat, ArrayList<LongLat>>  hashOrder(ArrayList<Order> orders, Menus allMenus)
 	{
@@ -53,7 +62,6 @@ public class Order
 					Location x = new Location(www, "localhost", "9898");
 					LongLat shop = new LongLat(x.getDetails().coordinates.lng, x.getDetails().coordinates.lat);
 					shopLocList.add(shop);
-					System.out.println(www);
 				}
 			}
 			hashedVertices.put(o.getDeliverTo(), shopLocList);
@@ -62,6 +70,23 @@ public class Order
 
 	}
 
+	/**
+	 * Get orderNo given the shop destination
+	 * @param destination a shop location in LongLat
+	 * @param orders all possible orders of current day
+	 * @return a String of orderNo
+	 */
+	public static String getOrderNo(@NotNull LongLat destination, @NotNull ArrayList<Order> orders)
+	{
+		for (Order o : orders)
+		{
+			if (o.getDeliverTo().latitude == destination.latitude &&
+				o.getDeliverTo().longitude == destination.longitude)
+			{
+				return o.orderNo;
+			}
 
-
+		}
+		return "0";
+	}
 }

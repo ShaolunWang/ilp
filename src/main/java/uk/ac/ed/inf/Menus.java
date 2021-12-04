@@ -83,7 +83,6 @@ public class Menus
 				for (HashMap<String, Integer> hashShop : hashShops)
 				{
 					//iterate through all the foods being ordered
-
 					if (hashShop.containsKey(food))
 					{
 						temp += hashShop.get(food);
@@ -112,11 +111,24 @@ public class Menus
 
 		return gson.fromJson(getMenus.requestAccessHttp(), listType);
 	}
+
+	/**
+	 * a function designed to make the code more readable
+	 * it simply converts a list of shops to an arraylist of hashmaps
+	 * @param shops An arraylist of all possible shops
+	 * @return a hashmap that stores (item, pence) pair efficiently
+	 */
 	private @NotNull ArrayList<HashMap<String, Integer>> toHashShops(ArrayList<Shop> shops)
 	{
 		return hashPence(shops);
 	}
-	public ArrayList<String> getFoodLoc(String ...foods)
+
+	/**
+	 * Get the location of deliveries in what3word form
+	 * @param foods String Vararg of orders
+	 * @return a String of what3word location
+	 */
+	public ArrayList<String> getFoodLoc(String @NotNull ...foods)
 	{
 		final ArrayList<String> foodLoc = new ArrayList<>();
 
