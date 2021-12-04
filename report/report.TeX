@@ -1,0 +1,216 @@
+
+\title{Project Report}
+%
+%%% Preamble
+\documentclass[a4paper,article,fontsize=15pt]{scrartcl}
+%\documentclass[paper=a4, fontsize=14pt]{scrartcl}
+\usepackage[english]{babel}
+\usepackage{polyglossia}
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+%usepackage[T1]{fontenc}
+\usepackage{kpfonts, Baskervaldx}
+\usepackage{bold-extra}
+\usepackage{tikz}
+\usepackage{fontspec}
+\usepackage{titlesec}
+\newfontfamily\headingfont[]{baskervaldx}
+	\titleformat{\section}{\centering\scshape\headingfont}{\thesection}{1em}{\LARGE}
+	\titleformat{\subsection}{\centering\scshape\headingfont}{\thesubsection}{1em}{\large}
+	\titleformat{\subsubsection}{\scshape\headingfont}{\thesubsubsection}{1em}{\normalsize}
+
+
+
+
+\setmainlanguage[]{english}
+\usepackage[protrusion=true, expansion=true]{microtype}	
+\usepackage[noend]{algpseudocode}
+\usepackage{algorithm} 
+\usepackage{biblatex} %Imports biblatex package
+\addbibresource{ilp.bib} %Import the bibliography file
+ 
+\usepackage{url}
+\usepackage{float}
+\usepackage{blindtext}
+\usepackage{listings}
+
+%%% Custom headers/footers (fancyhdr package)
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{scrlayer-fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{Informatics Large Practical} \\ [15pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge Description of the Designed Application \\
+		\horrule{2pt}\\[0.5cm]
+}
+\author{
+		\normalfont\normalsize
+        s1911792\\[-3pt]\normalsize
+        \today
+}
+\date{}
+
+
+%%% Begin document
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\section{Software Design Description}
+This section is to provide a brief description on the architecture of the software.
+\subsection{Implementation Task}
+The implementation is aimed to set up an ordering system that can deliver food from different shops to the desired locations, while bypassing no-fly zones, before the deliver drone runs out of battery. It should be back to where it started if it delivered everything, or about to run out of the battery.
+    \subsection{Description on the Application}
+    My implementation consists of 14 classes:
+    \begin{enumerate}
+        \item \verb|App.java| The class that would run the application.
+        \item \verb|AllOrder.java| The class that would combine the paths for each order together, 
+		and gives the path and total money earned on the day.
+        \item \verb|DerbyIO.java| The class that handles Derby database requests, such as reading and writing to the database.
+        \item \verb|GeoJson.java| The class that controls the read and write from/to a GeoJson file.
+        \item \verb|Heuristic.java| The class that implements an admissible heuristic for a* algorithm
+        \item \verb|Location.java| It converts a "what3word" string into a \verb |LongLat| object.
+        \item \verb|LongLat.java| This class stores the location of each object, 
+		as well as the angle of the drone at each location. It also contains various method that would do 
+		coordinate related arithmetics.
+        \item \verb|Menus.java|  The \verb|Menus.java| would handle the prices of each order.
+        \item \verb|NoFlyZone.java| This class is responsible for handling reading and calculating no-fly zones,
+					as well as calculating points that's close to the no-fly zones.
+        \item \verb|Order.java| The \verb |Order| class would read all the orders' delivery points as well as shops
+									and store them in a given format.
+        \item \verb|Request.java| This class handles all the \verb| HttpRequest| set-ups.
+        \item \verb|SingleOrder.java| This class would compute each single order's delivery path by using a*, 
+		as well as converting the path into moves.
+        \item \verb|Details.java| and \verb|Shop.java| This two classes are to set up type tokens, for us to read
+									values from server.
+    \end{enumerate}
+    
+    \newpage
+    
+    \subsection{UML Diagram of the structure and Basic Interactions} 
+    \begin{figure}[H]
+        \centering
+    	    \includegraphics[width=1\textwidth, height=0.45\textheight]{main.png}
+    	\caption{UML Diagram of the design}
+        \label{UML}
+    \end{figure}
+The application would take user-input date \texttt{(App)}, read the required data from the web server and database\texttt{(DerbyIO, GeoJson, Order, Location)}), setting up a graph\texttt{(NoFlyZone, SingleOrder)} and compute the route for the drone\texttt{(AllOrders,SingleOrder,Heuristic)}. Then the drone would simulate the optimal path given by a* algorithm move by move.The output will be a geojson file that contains all the moves, and user messages describing the performance of the delivery.
+
+\newpage
+\section{Drone Control Algorithm}
+
+The idea of drone control algorithm is quite simple. For each order we calculate the path from
+given start to given end.
+
+
+\subsection{Graph and Searching}
+The graph's vertex consists of three parts:  starting point, way points, shop(s) and ending point.To generate way points, I used the points that's close to the no-fly zone corners. For the edges on the graph I used Manhattan distance to set them up, if and only if they don't cross the no-fly zone.
+
+\subsubsection{Close Points}
+
+For each corner we generate 4 points in quadrant (the current corner will be considered as $(0,0)$), using an appropriate angle, with a scaling parameter. In my case I choose the angle to be $\pi/6$ and scaling parameter to be $2.75$, so that the points will be separate and far enough for drone to adjust its path, when moving on the path given by a*.
+
+\subsubsection{A* Path Finding}
+
+The algorithm that I used for path-finding problem with obstacles, in this case no-fly zones, is A*. A* algorithm is famous for doing quick path-findings.  It is an informed search algorithm on weighted graphs: given a starting point, it tries to find a traversing path to a destination with the least cost. It is done by extending paths on a tree of paths rooted at the starting vertex, until destination is reached.\cite{4082128} In my implementation I used \textsc{JgraphT}'s\cite{JgraphT} package for doing a* path finding. 
+
+To make sure that we could have an optimal solution I implemented an admissible heuristic using Manhattan distance, so that it will never overestimate the cost.
+
+
+The implementation of computing all possible paths are shown below:
+\begin{algorithm}
+	\caption{Drone Control Algorithm For a Single Order} 
+	\begin{algorithmic}[1]
+		\For {$order$ in $Orders$}
+			\For {$vertex$ in $Graph$}
+				\State $a^*(start,end, path)$
+			\EndFor
+			
+			\If {shop.size() == 2}
+			    \State $var1$ \gets $path(start, shop[1], shop[2], end)$ 
+			    \State $var1$ \gets $path(start, shop[2], shop[1], end)$
+			    \If{ $var1 \leq var2$}
+			    \State use $path(start, shop[1], shop[2], end)$
+			    \Else
+			    \State use $path(start, shop[2], shop[1], end)$
+			    \EndIf
+			\Else
+			    \State use $path(start, shop[1], end)$
+            \EndIf
+            add $allPaths \longleftarrow path$
+		\EndFor
+	\State $concatenate(allPaths)$
+	\end{algorithmic} 
+\end{algorithm}
+
+\newpage
+
+\subsubsection{Drone Movement}
+After all the paths are calculated, the drone would try to move on the paths given by a*. It will trying to turn to the vertices on the path  and move to that position. After finishing the current path, starting point will be set to the current ending point.
+
+Below shows a path that goes from previous delivery point to the next delivery point:
+    \begin{figure}[H]
+        \centering
+    	    \includegraphics[width=0.5\textwidth]{astaronepath.png}
+    	\caption{A delivery path generated by a* as shown}
+        \label{astaronepath}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+    	    \includegraphics[width=0.5\textwidth]{moveonepath.png}
+    	\caption{A delivery path simulated by drone as shown}
+        \label{moveonepath}
+    \end{figure}
+\subsection{The Order of Orders}
+By the specification, we are restricted to deliver one order at a time. Hence a major question arise:in which order should I deliver the orders?
+To solve this problem, I did a simple greedy approach, by going to the closes shop with smallest Manhattan distance to current starting point. Using Manhattan distance instead of Euclidean distance is to approximately represent the cost of crossing to no-fly zone.\hfill\newline
+
+I have not calculate all the possible path size for the upcoming order, inasmuch as that it will be computationally expensive to do so, even for a* path finding. 
+\subsection{Instability of the Algorithm}
+The application will produce different results. This may be caused by admissible heuristic is not consistent, i.e. in some cases it will overestimate the cost.
+
+To fix this problem, I let it run for 15 times and get the best outcomes of the run. This can be done because a* path finding is fast enough for me to do so. And this is another reason that I used greedy approach to decide the order of the orders, i.e. to reduce the computational complexity.
+
+In such way,it is possible to having a very optimal output on the hardest day (2023-12-27), in the given data set, as shown below:
+
+    \begin{figure}[H]
+        \centering
+    	    \includegraphics[width=1\textwidth]{bestrun.png}
+    	\caption{Delivery path for 2023-12-27}
+        \label{best run}
+    \end{figure}
+\newpage
+
+This is with an monetary value of 92\% delivered. Note that it's not possible to deliver all of the orders in this sample case.
+\section{Advantages and Disadvantages}
+The advantages of this implementation is that it's very optimal comparing to most of the other implementation. It goes to points that's very close to the no fly zone, and a* path finding makes sure that it would go to the optimal paths.\hfill \\
+
+However, the space complexity isn't something that can be ignored. While a* algorithm already having $O(\mid V \mid)$ space complexity, by running it multiple times might not be possible on a ram-limited server.\hfill \\
+
+Another major downside is that it might hit the no-fly zone. In contrast to the previous one, this problem can be solved by adjusting the distance between close points to the no-fly zone corners and corners themselves. Adding the distance would solve this problem.\hfill \\
+
+A side note is that this algorithm does not need to check the confinement due to the close points are unlikely to be in the confinement area, practically. If there happened to be an issue with the confinement area, i.e. there exists an strictly confined area for the drone to operate, I would suggest adding confinement area as no-fly zone in order to properly operates.
+
+\newpage
+\printbibliography %Prints bibliography
+
+\end{document}
